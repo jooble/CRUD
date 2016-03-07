@@ -55,7 +55,7 @@ public class HelloController {
         return allPurse(model);
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String deletePurse(@PathVariable(value = "id") Long id, ModelMap model) {
         purseDao.deleteById(id);
         return allPurse(model);
