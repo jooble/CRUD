@@ -3,8 +3,10 @@ package ru.jooble.dao;
 
 import ru.jooble.domain.Purse;
 
-import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,13 +22,11 @@ public class PurseDaoJdbcImpl implements PurseDao {
     public static final String SELECT_FROM_ALL_PURSE = "SELECT * FROM purse";
     public static final String UPDATES_PURSE = "UPDATE purse SET name = ?, currency = ?, amount = ? WHERE id = ?";
     public static final String DELETE_PURSE = "DELETE FROM purse WHERE id = ?";
-    public static final String DELETE_ALL_PURSE = "DELETE FROM purse";
     private ConnectionFactory connectionFactory;
 
     public PurseDaoJdbcImpl(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
     }
-
 
 
     @Override
@@ -59,8 +59,8 @@ public class PurseDaoJdbcImpl implements PurseDao {
             if (i == 0) {
                 throw new DaoException("Table 'Purses' was not updated", null);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new DaoException(String.format("Method insert(purse: '%d') has throw an exception.", purse), e);
         }
     }
 
@@ -76,11 +76,9 @@ public class PurseDaoJdbcImpl implements PurseDao {
                             resultSet.getString(COLUMN_CURRENCY),
                             resultSet.getInt(COLUMN_AMOUNT)));
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new DaoException(String.format("Method getAll Purses; has throw an exception."), e);
         }
         return purse;
     }
@@ -95,8 +93,8 @@ public class PurseDaoJdbcImpl implements PurseDao {
             statement.setInt(3, purse.getAmount());
             statement.setLong(4, purse.getId());
             statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new DaoException(String.format("Method update(purse: '%d') has throw an exception.", purse), e);
         }
     }
 
@@ -106,18 +104,8 @@ public class PurseDaoJdbcImpl implements PurseDao {
              PreparedStatement statement = connection.prepareStatement(DELETE_PURSE);) {
             statement.setLong(1, id);
             statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void deleteAll() {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(DELETE_ALL_PURSE);) {
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new DaoException(String.format("Method deleteById(id: '%d') has throw an exception.", id), e);
         }
     }
 

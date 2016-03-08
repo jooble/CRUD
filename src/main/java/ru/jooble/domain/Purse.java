@@ -50,9 +50,9 @@ public class Purse {
     @Override
     public String toString() {
         return "Purse{ " +
-                "id " + getId()+
-                "name " + getName() +
-                "currency "+ getCurrency()+
-                "amount "+ getAmount();
+                " id=" + getId()+
+                " name=" + getName() +
+                " currency="+ getCurrency()+
+                " amount="+ getAmount();
     }
 }

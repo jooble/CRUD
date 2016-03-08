@@ -1,11 +1,9 @@
-package ru.jooble.dao;
+package ru.jooble.service;
 
 import ru.jooble.domain.Purse;
-
 import java.util.List;
 
-public interface PurseDao {
-
+public interface PurseService {
     Purse getById(long id);
 
     void insert(Purse purse);
@@ -16,3 +14,7 @@ public interface PurseDao {
 
     void deleteById(long id);
 }
+
+
+
+
