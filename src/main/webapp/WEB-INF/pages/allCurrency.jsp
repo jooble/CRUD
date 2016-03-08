@@ -21,6 +21,7 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <c:forEach var="currency" items="${currency}">
@@ -28,6 +29,12 @@
                 <tr>
                     <td> ${currency.id}</td>
                     <td>${currency.name}</td>
+                    <td>
+                        <p>
+                            <a class="btn btn-default btn-xs" href="/delete/currency/${currency.id}" role="button">delete</a>
+                            <a class="btn btn-default btn-xs" href="/edit/currency/${currency.id}" role="button">edit</a>
+                        </p>
+                    </td>
                 </tr>
             </thbody>
         </c:forEach>

@@ -4,6 +4,7 @@ import ru.jooble.domain.Purse;
 import java.util.List;
 
 public interface PurseService {
+
     Purse getById(long id);
 
     void insert(Purse purse);

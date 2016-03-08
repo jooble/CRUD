@@ -20,4 +20,19 @@ public class CurrencyServiceJdbcImpl implements CurrencyService {
         new CurrencyDaoJdbcImpl(ConnectionFactory.getInstance()).insert(currency);
     }
 
+    @Override
+    public Currency getById(long id) {
+        return new CurrencyDaoJdbcImpl(ConnectionFactory.getInstance()).getById(id);
+    }
+
+    @Override
+    public void update(Currency currency) {
+        new CurrencyDaoJdbcImpl(ConnectionFactory.getInstance()).update(currency);
+    }
+
+    @Override
+    public void deleteById(long id) {
+        new CurrencyDaoJdbcImpl(ConnectionFactory.getInstance()).deleteById(id);
+    }
+
 }

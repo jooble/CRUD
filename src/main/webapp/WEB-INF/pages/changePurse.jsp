@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <c:set var="checkEditOfAddPurse" value="${checkEditOfAddPurse}"/>
-<c:if test="${checkEditOfAddPurse > 0}">
+<c:if test="${checkEditOfAddPurse.equals('editPurse')}">
     <html>
     <head>
         <title>Edit Purse</title>
@@ -25,8 +25,8 @@
             <div>
                 <label>Currency</label>
                 <select class="form-control" name="editPurseCurrency">
-                    <c:forEach var="currency" items="${currency}">
-                        <option>${currency.name}</option>
+                    <c:forEach var="allCurrencyName" items="${allCurrencyName}">
+                        <option>${allCurrencyName.name}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -43,7 +43,7 @@
 </c:if>
 
 <c:set var="checkEditOfAddPurse" value="${checkEditOfAddPurse}"/>
-<c:if test="${checkEditOfAddPurse == 0}">
+<c:if test="${checkEditOfAddPurse.equals('addPurse')}">
     <html>
     <head>
         <title>Add Purse</title>
@@ -66,8 +66,8 @@
             <div>
                 <label>Currency</label>
                 <select class="form-control" name="addPurseCurrency">
-                    <c:forEach var="currency" items="${currency}">
-                        <option>${currency.name}</option>
+                    <c:forEach var="allCurrencyName" items="${allCurrencyName}">
+                        <option>${allCurrencyName.name}</option>
                     </c:forEach>
                 </select>
             </div>

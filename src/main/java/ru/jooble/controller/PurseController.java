@@ -28,8 +28,8 @@ public class PurseController {
     @RequestMapping(value = "/add/purse", method = RequestMethod.GET)
     public String addPurse(ModelMap model) {
         CurrencyService currencyService = new CurrencyServiceJdbcImpl();
-        model.addAttribute("currency", currencyService.getAll());
-        model.addAttribute("checkEditOfAddPurse", 0);
+        model.addAttribute("checkEditOfAddPurse", "addPurse");
+        model.addAttribute("allCurrencyName", currencyService.getAll());
         return "changePurse";
     }
 
@@ -42,10 +42,10 @@ public class PurseController {
 
     @RequestMapping(value = "/edit/purse/{id}", method = RequestMethod.GET)
     public String editPurse(@PathVariable(value = "id") Long id, ModelMap model) {
+        model.addAttribute("checkEditOfAddPurse", "editPurse");
         CurrencyService currencyService = new CurrencyServiceJdbcImpl();
-        model.addAttribute("currency", currencyService.getAll());
+        model.addAttribute("allCurrencyName", currencyService.getAll());
         PurseService purseService = new PurseServiceJdbcImpl();
-        model.addAttribute("checkEditOfAddPurse", 1);
         model.addAttribute("editPurse", purseService.getById(id));
         return "changePurse";
     }
