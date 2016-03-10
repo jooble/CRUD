@@ -46,11 +46,8 @@ public class PurseController {
     }
 
     @RequestMapping(value = "/add/purse", method = RequestMethod.POST)
-    public RedirectView addPurse(@RequestParam String addPurseName, @RequestParam String addPurseCurrency, @RequestParam int addPurseAmount) {
-        String s = addPurseCurrency;
-        String[] idCurrency = s.split(":");
-        int addPurseIdCurrency= Integer.parseInt(idCurrency[0]);
-        purseService.insert(new Purse(0, addPurseName, addPurseIdCurrency, addPurseAmount));
+    public RedirectView addPurse(@RequestParam String addPurseName, @RequestParam int addPurseCurrency, @RequestParam int addPurseAmount) {
+        purseService.insert(new Purse(0, addPurseName, addPurseCurrency, addPurseAmount));
         return new RedirectView("/");
     }
 
@@ -63,11 +60,9 @@ public class PurseController {
     }
 
     @RequestMapping(value = "/edit/purse/{id}", method = RequestMethod.POST)
-    public RedirectView editPurse(@PathVariable(value = "id") Long id, @RequestParam String editPurseName, @RequestParam String editPurseCurrency, @RequestParam int editPurseAmount) {
-        String s = editPurseCurrency;
-        String[] idCurrency = s.split(":");
-        int editPurseIdCurrency= Integer.parseInt(idCurrency[0]);
-        purseService.update(new Purse(id, editPurseName, editPurseIdCurrency, editPurseAmount));
+    public RedirectView editPurse(@PathVariable(value = "id") Long id, @RequestParam String editPurseName, @RequestParam int editPurseCurrency, @RequestParam int editPurseAmount) {
+
+        purseService.update(new Purse(id, editPurseName, editPurseCurrency, editPurseAmount));
         return new RedirectView("/");
     }
 
