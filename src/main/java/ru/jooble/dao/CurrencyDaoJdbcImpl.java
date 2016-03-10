@@ -1,8 +1,12 @@
 package ru.jooble.dao;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.jooble.domain.Currency;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,24 +14,26 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Repository
 public class CurrencyDaoJdbcImpl implements CurrencyDao {
-    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_ID = "idcurrency";
     public static final String COLUMN_NAME = "name";
-    public static final String SELECT_BY_ID_QUERY = "SELECT * FROM currency WHERE id = ?";
+    public static final String SELECT_BY_ID_QUERY = "SELECT * FROM currency WHERE idcurrency = ?";
     public static final String INSERT_CRURRENCY = "INSERT INTO currency (name) VALUES (?)";
     public static final String SELECT_FROM_ALL_CURRENCY = "SELECT * FROM currency";
-    public static final String UPDATES_CURRENCY = "UPDATE currency SET name = ? WHERE id = ?";
-    public static final String DELETE_CURRENCY = "DELETE FROM currency WHERE id = ?";
-    private ConnectionFactory connectionFactory;
+    public static final String UPDATES_CURRENCY = "UPDATE currency SET name = ? WHERE idcurrency = ?";
+    public static final String DELETE_CURRENCY = "DELETE FROM currency WHERE idcurrency = ?";
 
-    public CurrencyDaoJdbcImpl(ConnectionFactory connectionFactory) {
-        this.connectionFactory = connectionFactory;
+    @Autowired
+    private DataSource dataSource;
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
     public Currency getById(long id) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_QUERY);) {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery();) {
@@ -46,7 +52,7 @@ public class CurrencyDaoJdbcImpl implements CurrencyDao {
     @Override
     public List<Currency> getAll() {
         List<Currency> currency = new ArrayList<>();
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();) {
             try (ResultSet resultSet = statement.executeQuery(SELECT_FROM_ALL_CURRENCY);) {
                 while (resultSet.next()) {
@@ -62,7 +68,7 @@ public class CurrencyDaoJdbcImpl implements CurrencyDao {
 
     @Override
     public void insert(Currency currency) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_CRURRENCY);) {
             statement.setString(1, currency.getName());
             int i = statement.executeUpdate();
@@ -76,7 +82,7 @@ public class CurrencyDaoJdbcImpl implements CurrencyDao {
 
     @Override
     public void update(Currency currency) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATES_CURRENCY);) {
             statement.setString(1, currency.getName());
             statement.setLong(2, currency.getId());
@@ -88,7 +94,7 @@ public class CurrencyDaoJdbcImpl implements CurrencyDao {
 
     @Override
     public void deleteById(long id) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_CURRENCY);) {
             statement.setLong(1, id);
             statement.executeUpdate();

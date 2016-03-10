@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<?xml version="1.0" encoding="UTF-8" ?>
 <html>
 <head>
     <title>All Currency</title>
@@ -24,7 +24,7 @@
             <th>Actions</th>
         </tr>
         </thead>
-        <c:forEach var="currency" items="${currency}">
+        <c:forEach var="currency" items="${currencies}">
             <thbody>
                 <tr>
                     <td> ${currency.id}</td>

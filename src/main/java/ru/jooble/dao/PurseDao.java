@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface PurseDao {
 
+
     Purse getById(long id);
 
     void insert(Purse purse);

@@ -1,8 +1,11 @@
 package ru.jooble.dao;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.jooble.domain.Purse;
-
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,35 +13,36 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Repository
 public class PurseDaoJdbcImpl implements PurseDao {
 
-    public static final String SELECT_BY_ID_QUERY = "SELECT * FROM purse WHERE id = ?";
-    public static final String COLUMN_ID = "id";
+    public static final String SELECT_BY_ID_QUERY = "SELECT * FROM purse WHERE idpurse = ?";
+    public static final String COLUMN_ID = "idpurse";
     public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_CURRENCY = "currency";
+    public static final String COLUMN_CURRENCY = "idcurrency";
     public static final String COLUMN_AMOUNT = "amount";
-    public static final String INSERT_PURSE = "INSERT INTO purse (name, currency, amount) VALUES (?, ?, ?)";
+    public static final String INSERT_PURSE = "INSERT INTO purse (name, idcurrency, amount) VALUES (?, ?, ?)";
     public static final String SELECT_FROM_ALL_PURSE = "SELECT * FROM purse";
-    public static final String UPDATES_PURSE = "UPDATE purse SET name = ?, currency = ?, amount = ? WHERE id = ?";
-    public static final String DELETE_PURSE = "DELETE FROM purse WHERE id = ?";
-    private ConnectionFactory connectionFactory;
+    public static final String UPDATES_PURSE = "UPDATE purse SET name = ?, idcurrency = ?, amount = ? WHERE idpurse = ?";
+    public static final String DELETE_PURSE = "DELETE FROM purse WHERE idpurse = ?";
 
-    public PurseDaoJdbcImpl(ConnectionFactory connectionFactory) {
-        this.connectionFactory = connectionFactory;
+    @Autowired
+    private DataSource dataSource;
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
-
 
     @Override
     public Purse getById(long id) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_QUERY);) {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery();) {
                 while (resultSet.next()) {
                     return new Purse(resultSet.getLong(COLUMN_ID),
                             resultSet.getString(COLUMN_NAME),
-                            resultSet.getString(COLUMN_CURRENCY),
+                            resultSet.getInt(COLUMN_CURRENCY),
                             resultSet.getInt(COLUMN_AMOUNT));
                 }
             }
@@ -50,10 +54,10 @@ public class PurseDaoJdbcImpl implements PurseDao {
 
     @Override
     public void insert(Purse purse) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_PURSE);) {
             statement.setString(1, purse.getName());
-            statement.setString(2, purse.getCurrency());
+            statement.setInt(2, purse.getIdcurrency());
             statement.setInt(3, purse.getAmount());
             int i = statement.executeUpdate();
             if (i == 0) {
@@ -67,13 +71,13 @@ public class PurseDaoJdbcImpl implements PurseDao {
     @Override
     public List<Purse> getAll() {
         List<Purse> purse = new ArrayList<>();
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();) {
             try (ResultSet resultSet = statement.executeQuery(SELECT_FROM_ALL_PURSE);) {
                 while (resultSet.next()) {
                     purse.add(new Purse(resultSet.getLong(COLUMN_ID),
                             resultSet.getString(COLUMN_NAME),
-                            resultSet.getString(COLUMN_CURRENCY),
+                            resultSet.getInt(COLUMN_CURRENCY),
                             resultSet.getInt(COLUMN_AMOUNT)));
                 }
             }
@@ -86,10 +90,10 @@ public class PurseDaoJdbcImpl implements PurseDao {
 
     @Override
     public void update(Purse purse) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATES_PURSE);) {
             statement.setString(1, purse.getName());
-            statement.setString(2, purse.getCurrency());
+            statement.setInt(2, purse.getIdcurrency());
             statement.setInt(3, purse.getAmount());
             statement.setLong(4, purse.getId());
             statement.executeUpdate();
@@ -100,7 +104,7 @@ public class PurseDaoJdbcImpl implements PurseDao {
 
     @Override
     public void deleteById(long id) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_PURSE);) {
             statement.setLong(1, id);
             statement.executeUpdate();
