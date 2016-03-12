@@ -4,27 +4,18 @@ package ru.jooble.domain;
 public class Purse {
     private long id;
     private String name;
-    private int idcurrency;
+    private int currencyId;
     private String currencyShortName;
+    private int ownerId;
     private int amount;
 
-
-    public Purse(long id, String name, int idcurrency, int amount) {
+    public Purse(long id, String name, int currencyId, int ownerId, int amount) {
         this.id = id;
         this.name = name;
-        this.idcurrency = idcurrency;
+        this.currencyId = currencyId;
+        this.ownerId = ownerId;
         this.amount = amount;
-
     }
-
-    public Purse(long id, int amount, String name, int idcurrency, String currencyShortName) {
-        this.id = id;
-        this.amount = amount;
-        this.name = name;
-        this.idcurrency = idcurrency;
-        this.currencyShortName = currencyShortName;
-    }
-
 
     public long getId() {
         return id;
@@ -32,22 +23,6 @@ public class Purse {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public int getIdcurrency() {
-        return idcurrency;
-    }
-
-    public void setIdcurrency(int idcurrency) {
-        this.idcurrency = idcurrency;
     }
 
     public String getName() {
@@ -58,6 +33,14 @@ public class Purse {
         this.name = name;
     }
 
+    public int getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(int currencyId) {
+        this.currencyId = currencyId;
+    }
+
     public String getCurrencyShortName() {
         return currencyShortName;
     }
@@ -66,13 +49,30 @@ public class Purse {
         this.currencyShortName = currencyShortName;
     }
 
+    public long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     @Override
     public String toString() {
         return "Purse{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", idcurrency=" + idcurrency +
+                ", currencyId=" + currencyId +
                 ", currencyShortName='" + currencyShortName + '\'' +
+                ", ownerId=" + ownerId +
                 ", amount=" + amount +
                 '}';
     }

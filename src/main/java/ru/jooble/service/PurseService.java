@@ -1,6 +1,5 @@
 package ru.jooble.service;
 
-import ru.jooble.domain.Currency;
 import ru.jooble.domain.Purse;
 
 import java.util.List;

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import ru.jooble.domain.Purse;
 import ru.jooble.service.CurrencyService;
 import ru.jooble.service.PurseService;
+import ru.jooble.service.UserService;
 
 
 @Controller
@@ -22,53 +23,57 @@ public class PurseController {
     private CurrencyService currencyService;
     @Autowired
     private PurseService purseService;
-
-    public void setCurrencyService(CurrencyService currencyService) {
-        this.currencyService = currencyService;
-    }
-
-    public void setPurseService(PurseService purseService) {
-        this.purseService = purseService;
-    }
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String showPageAllPurses(ModelMap model) {
         model.addAttribute("purses", purseService.getAll());
-
         return ALL_PURSE;
     }
 
     @RequestMapping(value = "/add/purse", method = RequestMethod.GET)
     public String showPageAddPurse(ModelMap model) {
-        model.addAttribute("checkEditOfAddPurse", "addPurse");
-        model.addAttribute("allCurrencyName", currencyService.getAll());
+        model.addAttribute("inspection", "add");
+        model.addAttribute("users", userService.getAll());
+        model.addAttribute("currencies", currencyService.getAll());
         return CHANGE_PURSE;
     }
 
     @RequestMapping(value = "/add/purse", method = RequestMethod.POST)
-    public RedirectView addPurse(@RequestParam String addPurseName, @RequestParam int addPurseCurrency, @RequestParam int addPurseAmount) {
-        purseService.insert(new Purse(0, addPurseName, addPurseCurrency, addPurseAmount));
+    public RedirectView addPurse(@RequestParam String savePurseName, @RequestParam int savePurseCurrencyId, @RequestParam int savePurseOwnerId, @RequestParam int savePurseAmount) {
+        purseService.insert(new Purse(0, savePurseName, savePurseCurrencyId, savePurseOwnerId, savePurseAmount));
         return new RedirectView("/");
     }
 
     @RequestMapping(value = "/edit/purse/{id}", method = RequestMethod.GET)
     public String showPageEditPurse(@PathVariable(value = "id") Long id, ModelMap model) {
-        model.addAttribute("checkEditOfAddPurse", "editPurse");
-        model.addAttribute("allCurrencyName", currencyService.getAll());
+        model.addAttribute("inspection", "edit");
+        model.addAttribute("users", userService.getAll());
+        model.addAttribute("currencies", currencyService.getAll());
         model.addAttribute("editPurse", purseService.getById(id));
         return CHANGE_PURSE;
     }
 
     @RequestMapping(value = "/edit/purse/{id}", method = RequestMethod.POST)
-    public RedirectView editPurse(@PathVariable(value = "id") Long id, @RequestParam String editPurseName, @RequestParam int editPurseCurrency, @RequestParam int editPurseAmount) {
-
-        purseService.update(new Purse(id, editPurseName, editPurseCurrency, editPurseAmount));
+    public RedirectView editPurse(@PathVariable(value = "id") Long id, @RequestParam String savePurseName, @RequestParam int savePurseOwnerId, @RequestParam int savePurseCurrencyId, @RequestParam int savePurseAmount, ModelMap model) {
+        purseService.update(new Purse(id, savePurseName, savePurseCurrencyId, savePurseOwnerId, savePurseAmount));
         return new RedirectView("/");
     }
 
+
     @RequestMapping(value = "/delete/purse/{id}", method = RequestMethod.GET)
-    public RedirectView deletePurse(@PathVariable(value = "id") Long id, ModelMap model) {
+    public RedirectView deletePurse(@PathVariable(value = "id") Long id) {
         purseService.deleteById(id);
         return new RedirectView("/");
+    }
+
+    private boolean validityChecking(String st) {
+        try {
+            Integer.parseInt(st);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

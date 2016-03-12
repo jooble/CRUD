@@ -13,11 +13,6 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Autowired
     private CurrencyDao currencyDao;
 
-    public void setCurrencyDao(CurrencyDao currencyDao) {
-        this.currencyDao = currencyDao;
-    }
-
-
     @Override
     public List<Currency> getAll() {
         return currencyDao.getAll();
