@@ -1,4 +1,4 @@
-package ru.jooble.controller;
+package ru.jooble.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.jooble.domain.Currency;
 import ru.jooble.service.CurrencyService;
-import ru.jooble.service.CurrencyServiceImpl;
 import ru.jooble.service.PurseService;
 
 @Controller
@@ -19,8 +18,6 @@ public class CurrencyController {
     public static final String ALL_CURRENCY = "allCurrency";
     @Autowired
     private CurrencyService currencyService;
-    @Autowired
-    private PurseService purseService;
 
     @RequestMapping(value = "/all/currency", method = RequestMethod.GET)
     public String showPageAllCurrency(ModelMap model) {

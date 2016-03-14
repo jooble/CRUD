@@ -1,3 +1,3 @@
-INSERT INTO purse (ownerId, currencyId, name, amount) VALUES (1, 1, 'Π—Π°Ρ€ΠΏΠ»Π°Ρ‚Π°', 1000);
+INSERT INTO purse (ownerId, currencyId, name, amount) VALUES (1, 1, 'Ηΰπολΰςΰ', 1000);
 INSERT INTO purse (ownerId, currencyId, name, amount) VALUES (2, 2, 'Zapravka', 500);
 INSERT INTO purse (ownerId, currencyId, name, amount) VALUES (3, 3, 'Pensiya', 20);

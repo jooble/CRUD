@@ -1,15 +1,17 @@
 package ru.jooble.domain;
 
 
+import java.math.BigDecimal;
+
 public class Purse {
     private long id;
     private String name;
     private int currencyId;
     private String currencyShortName;
     private int ownerId;
-    private int amount;
+    private BigDecimal amount;
 
-    public Purse(long id, String name, int currencyId, int ownerId, int amount) {
+    public Purse(long id, String name, int currencyId, int ownerId, BigDecimal amount) {
         this.id = id;
         this.name = name;
         this.currencyId = currencyId;
@@ -49,7 +51,7 @@ public class Purse {
         this.currencyShortName = currencyShortName;
     }
 
-    public long getOwnerId() {
+    public int getOwnerId() {
         return ownerId;
     }
 
@@ -57,11 +59,11 @@ public class Purse {
         this.ownerId = ownerId;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

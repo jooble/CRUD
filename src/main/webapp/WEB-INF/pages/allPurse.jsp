@@ -1,8 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<?xml version="1.0" encoding="UTF-8" ?>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>All Purse</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
@@ -15,7 +15,7 @@
         <a class="btn btn-primary btn-xs" href="/all/currency" role="button">All Currency</a>
         <a class="btn btn-primary btn-xs" href="/all/user" role="button">All User</a>
     </p>
-    <center><h1>All Purse</h1></center>
+    <h1><p class="text-center">All Purse</p></h1>
     <p align="right"><a class="btn btn-info btn-xs" href="/add/purse" role="button">add purse</a></p>
 
     <table class="table">

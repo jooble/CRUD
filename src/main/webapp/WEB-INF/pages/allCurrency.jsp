@@ -14,7 +14,7 @@
         <a class="btn btn-primary btn-xs" href="/all/currency" role="button">All Currency</a>
         <a class="btn btn-primary btn-xs" href="/all/user" role="button">All User</a>
     </p>
-    <center><h1>All Currency</h1></center>
+    <h1><p class="text-center">All Currency</p></h1>
     <p align="right"><a class="btn btn-info btn-xs" href="/add/currency" role="button">add currency</a></p>
 
     <table class="table">

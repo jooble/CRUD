@@ -1,4 +1,4 @@
-package ru.jooble.controller;
+package ru.jooble.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +12,8 @@ import ru.jooble.domain.Purse;
 import ru.jooble.service.CurrencyService;
 import ru.jooble.service.PurseService;
 import ru.jooble.service.UserService;
+
+import java.math.BigDecimal;
 
 
 @Controller
@@ -41,7 +43,7 @@ public class PurseController {
     }
 
     @RequestMapping(value = "/add/purse", method = RequestMethod.POST)
-    public RedirectView addPurse(@RequestParam String savePurseName, @RequestParam int savePurseCurrencyId, @RequestParam int savePurseOwnerId, @RequestParam int savePurseAmount) {
+    public RedirectView addPurse(@RequestParam String savePurseName, @RequestParam int savePurseCurrencyId, @RequestParam int savePurseOwnerId, @RequestParam BigDecimal savePurseAmount) {
         purseService.insert(new Purse(0, savePurseName, savePurseCurrencyId, savePurseOwnerId, savePurseAmount));
         return new RedirectView("/");
     }
@@ -56,7 +58,7 @@ public class PurseController {
     }
 
     @RequestMapping(value = "/edit/purse/{id}", method = RequestMethod.POST)
-    public RedirectView editPurse(@PathVariable(value = "id") Long id, @RequestParam String savePurseName, @RequestParam int savePurseOwnerId, @RequestParam int savePurseCurrencyId, @RequestParam int savePurseAmount, ModelMap model) {
+    public RedirectView editPurse(@PathVariable(value = "id") Long id, @RequestParam String savePurseName, @RequestParam int savePurseOwnerId, @RequestParam int savePurseCurrencyId, @RequestParam BigDecimal savePurseAmount, ModelMap model) {
         purseService.update(new Purse(id, savePurseName, savePurseCurrencyId, savePurseOwnerId, savePurseAmount));
         return new RedirectView("/");
     }

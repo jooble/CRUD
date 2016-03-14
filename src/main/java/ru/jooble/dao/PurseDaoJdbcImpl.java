@@ -45,7 +45,7 @@ public class PurseDaoJdbcImpl implements PurseDao {
                             resultSet.getString(COLUMN_NAME),
                             resultSet.getInt(COLUMN_CURRENCY),
                             resultSet.getInt(COLUMN_USER),
-                            resultSet.getInt(COLUMN_AMOUNT));
+                            resultSet.getBigDecimal(COLUMN_AMOUNT));
                 }
             }
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class PurseDaoJdbcImpl implements PurseDao {
             statement.setLong(1, purse.getOwnerId());
             statement.setLong(2, purse.getCurrencyId());
             statement.setString(3, purse.getName());
-            statement.setLong(4, purse.getAmount());
+            statement.setBigDecimal(4, purse.getAmount());
             int i = statement.executeUpdate();
             if (i == 0) {
                 throw new DaoException("Table 'Purses' was not updated", null);
@@ -82,7 +82,7 @@ public class PurseDaoJdbcImpl implements PurseDao {
                             resultSet.getString(COLUMN_NAME),
                             resultSet.getInt(COLUMN_CURRENCY),
                             resultSet.getInt(COLUMN_USER),
-                            resultSet.getInt(COLUMN_AMOUNT)));
+                            resultSet.getBigDecimal(COLUMN_AMOUNT)));
                 }
             }
         } catch (Exception e) {
@@ -99,7 +99,7 @@ public class PurseDaoJdbcImpl implements PurseDao {
             statement.setLong(1, purse.getOwnerId());
             statement.setLong(2, purse.getCurrencyId());
             statement.setString(3, purse.getName());
-            statement.setLong(4, purse.getAmount());
+            statement.setBigDecimal(4, purse.getAmount());
             statement.setLong(5, purse.getId());
             statement.executeUpdate();
         } catch (Exception e) {

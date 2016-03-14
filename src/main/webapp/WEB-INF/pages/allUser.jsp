@@ -14,8 +14,8 @@
         <a class="btn btn-primary btn-xs" href="/all/currency" role="button">All Currency</a>
         <a class="btn btn-primary btn-xs" href="/all/user" role="button">All User</a>
     </p>
-    <center><h1>All User</h1></center>
-    <p align="right"><a class="btn btn-info btn-xs" href="/add/user" role="button">add user</a></p>
+    <h1><p class="text-center">All User</p></h1>
+    <p align="right"><a class="btn btn-info btn-xs" href="/save/user" role="button">add user</a></p>
     <table class="table">
         <thead>
         <tr>
@@ -34,7 +34,7 @@
                     <td>
                         <p>
                             <a class="btn btn-danger btn-xs" href="/delete/user/${user.id}" role="button">delete</a>
-                            <a class="btn btn-default btn-xs" href="/edit/user/${user.id}" role="button">edit</a>
+                            <a class="btn btn-default btn-xs" href="/save/user/${user.id}" role="button">edit</a>
                         </p>
                     </td>
                 </tr>

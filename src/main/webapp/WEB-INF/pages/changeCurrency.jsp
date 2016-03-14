@@ -15,7 +15,7 @@
         <a class="btn btn-primary btn-xs" href="/all/currency" role="button">All Currency</a>
         <a class="btn btn-primary btn-xs" href="/all/user" role="button">All User</a>
     </p>
-    <center><h1>Save Currency</h1></center>
+    <h1><p class="text-center">Save Currency</p></h1>
     <c:if test="${inspection.equals('edit')}">
     <form method="post" action="/edit/currency/${editCurrency.id}">
         </c:if>
