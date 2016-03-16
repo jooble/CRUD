@@ -6,7 +6,7 @@ CREATE TABLE purse
   currencyId INT                            NOT NULL,
   FOREIGN KEY (currencyId) REFERENCES currency (id),
   name       VARCHAR(45)                    NOT NULL,
-  amount     INT                            NOT NULL
+  amount     FLOAT                            NOT NULL
 
 
 );
