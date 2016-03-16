@@ -1,3 +1,4 @@
+<%@ taglib prefix="ex" uri="/WEB-INF/custom.tld" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -10,12 +11,7 @@
 </head>
 <body>
 <div class="container">
-    <p>
-        <a class="btn btn-primary btn-xs" href="/" role="button">All Purse</a>
-        <a class="btn btn-primary btn-xs" href="/all/currency" role="button">All Currency</a>
-        <a class="btn btn-primary btn-xs" href="/all/user" role="button">All User</a>
-    </p>
-
+    <ex:navigationButtons/>
     <h1><p class="text-center">Save User</p></h1>
     <form:form method="post" action="/save/user" commandName="userForm">
         <form:input class="form-control" id="id" path="id" value="${userForm.id}" type="hidden"/>

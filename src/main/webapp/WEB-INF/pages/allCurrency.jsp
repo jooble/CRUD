@@ -1,3 +1,4 @@
+<%@ taglib prefix="ex" uri="/WEB-INF/custom.tld" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <?xml version="1.0" encoding="UTF-8" ?>
 <html>
@@ -9,12 +10,7 @@
 </head>
 <body>
 <div class="container">
-    <p>
-        <a class="btn btn-primary btn-xs" href="/" role="button">All Purse</a>
-        <a class="btn btn-primary btn-xs" href="/all/currency" role="button">All Currency</a>
-        <a class="btn btn-primary btn-xs" href="/all/user" role="button">All User</a>
-    </p>
-
+    <ex:navigationButtons/>
     <h1><p class="text-center">All Currency</p></h1>
     <p align="right"><a class="btn btn-info btn-xs" href="/save/currency" role="button">add currency</a></p>
     <table class="table">

@@ -28,5 +28,4 @@
         <property name="basename" value="validation"/>
     </bean>
 
-
 </beans>
