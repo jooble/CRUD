@@ -11,6 +11,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import ru.jooble.controllers.forms.PurseForm;
 import ru.jooble.controllers.validator.PurseFromValidator;
 import ru.jooble.domain.Purse;
+import ru.jooble.domain.User;
 import ru.jooble.service.CurrencyService;
 import ru.jooble.service.PurseService;
 import ru.jooble.service.UserService;
@@ -23,6 +24,8 @@ import java.math.BigDecimal;
 public class PurseController {
     public static final String ALL_PURSE = "allPurse";
     public static final String ERROR_PAGE = "errorPage";
+    public static final String SAVE_PURSE = "savePurse";
+    public static final String PAGE_USER_SAVE_PURSE = "testAddPurseToUser";
     @Autowired
     private CurrencyService currencyService;
     @Autowired
@@ -49,7 +52,7 @@ public class PurseController {
         model.addAttribute("purseForm", new PurseForm());
         model.addAttribute("users", userService.getAll());
         model.addAttribute("currencies", currencyService.getAll());
-        return "savePurse";
+        return SAVE_PURSE;
     }
 
     @RequestMapping(value = "/save/purse/{id}", method = RequestMethod.GET)
@@ -61,7 +64,7 @@ public class PurseController {
         model.addAttribute("purseForm", new PurseForm(purse));
         model.addAttribute("users", userService.getAll());
         model.addAttribute("currencies", currencyService.getAll());
-        return "savePurse";
+        return SAVE_PURSE;
     }
 
     @RequestMapping(value = "/save/purse", method = RequestMethod.POST)
@@ -69,13 +72,41 @@ public class PurseController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("users", userService.getAll());
             model.addAttribute("currencies", currencyService.getAll());
-            return "savePurse";
+            return SAVE_PURSE;
         }
         if ("".equals(purseForm.getId())) {
             purseService.insert(new Purse(0, purseForm.getName(), Integer.parseInt(purseForm.getCurrencyId()), Integer.parseInt(purseForm.getOwnerId()), new BigDecimal(purseForm.getAmount())));
         } else {
             purseService.update(new Purse(Integer.parseInt(purseForm.getId()), purseForm.getName(), Integer.parseInt(purseForm.getCurrencyId()), Integer.parseInt(purseForm.getOwnerId()), new BigDecimal(purseForm.getAmount())));
         }
+        return showPageAllPurses(model);
+    }
+
+    @RequestMapping(value = "/user/save/purse/{id}", method = RequestMethod.GET)
+    public String showPageAddPurseUser(@PathVariable(value = "id") Long id, ModelMap model) {
+        User user = userService.getById(id);
+        if (user == null) {
+            return ERROR_PAGE;
+        }
+        model.addAttribute("purseForm", new PurseForm());
+       //TODO хотел передать целый объект, но валидатор ругается.
+        model.addAttribute("ownerId", user.getId());
+        model.addAttribute("currencies", currencyService.getAll());
+        return PAGE_USER_SAVE_PURSE;
+    }
+
+    @RequestMapping(value = "/user/save/purse/{id}", method = RequestMethod.POST)
+    public String addPurseUser(@PathVariable(value = "id") Long id, @Validated PurseForm purseForm, BindingResult bindingResult, ModelMap model) {
+        User user = userService.getById(id);
+        if (bindingResult.hasErrors()){
+            if (user == null) {
+                return ERROR_PAGE;
+            }
+            model.addAttribute("ownerId", user.getId());
+            model.addAttribute("currencies", currencyService.getAll());
+            return PAGE_USER_SAVE_PURSE;
+        }
+        purseService.insert(new Purse(0, purseForm.getName(), Integer.parseInt(purseForm.getCurrencyId()), Integer.parseInt(purseForm.getOwnerId()), new BigDecimal(purseForm.getAmount())));
         return showPageAllPurses(model);
     }
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.jooble.controllers.forms.UserForm;
 import ru.jooble.controllers.validator.UserFromValidator;
+import ru.jooble.domain.Purse;
 import ru.jooble.domain.User;
 import ru.jooble.service.UserService;
 
@@ -62,7 +63,6 @@ public class UserController {
         }
         return showAllUsers(model);
     }
-
 
     @RequestMapping(value = "/delete/user/{id}", method = RequestMethod.GET)
     public RedirectView deleteUser(@PathVariable(value = "id") Long id) {

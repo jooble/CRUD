@@ -1,4 +1,3 @@
-<%@ taglib prefix="ex" uri="/WEB-INF/custom.tld" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <?xml version="1.0" encoding="UTF-8" ?>
 <html>
@@ -10,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <ex:navigationButtons/>
+<jsp:include page="topNavigationButtons.jsp" flush="true"/>
     <h1><p class="text-center">All Currency</p></h1>
     <p align="right"><a class="btn btn-info btn-xs" href="/save/currency" role="button">add currency</a></p>
     <table class="table">

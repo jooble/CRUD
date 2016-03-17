@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="container">
-    <ex:navigationButtons/>
+    <jsp:include page="topNavigationButtons.jsp" flush="true"/>
     <h1><p class="text-center">Save Currency</p></h1>
     <form:form method="post" action="/save/currency" commandName="currencyForm">
         <form:input class="form-control" id="id" path="id" value="${currencyForm.id}" type="hidden"/>
