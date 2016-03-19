@@ -61,7 +61,7 @@ public class CurrencyController {
         } else {
             currencyService.update(new Currency(Integer.parseInt(currencyForm.getId()), currencyForm.getShortName()));
         }
-        return showAllCurrency(model);
+        return "redirect:/all/currency";
     }
 
     @RequestMapping(value = "/delete/currency/{id}", method = RequestMethod.GET)

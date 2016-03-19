@@ -60,7 +60,7 @@ public class UserController {
         } else {
             userService.update(new User(Integer.parseInt(userForm.getId()), userForm.getFirstName(), userForm.getLastName()));
         }
-        return showAllUsers(model);
+        return "redirect:/all/user";
     }
 
     @RequestMapping(value = "/delete/user/{id}", method = RequestMethod.GET)

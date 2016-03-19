@@ -2,6 +2,7 @@ package ru.jooble.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ru.jooble.dao.DAOManager;
 import ru.jooble.dao.DAOManagerFactory;
@@ -17,74 +18,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(long id) {
-        try {
-            try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
-                daoManager.beginTransaction();
-                try {
-                    User user = daoManager.getUserDAO().getById(id);
-                    daoManager.commitTransaction();
-                    return user;
-                } catch (Exception e) {
-                    daoManager.rollbackTransaction();
-                    throw new ServiceException(String.format("Can`t get user by id (%s)", id), e);
-                }
-            }
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t get user by id (%s)", id), e);
-        }
+        return daoManagerFactory.getDAOManager().getUserDAO().getById(id);
     }
 
     @Override
     public void insert(User user) {
-        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
-            daoManager.beginTransaction();
-            try {
-                daoManager.getUserDAO().insert(user);
-                daoManager.commitTransaction();
-            } catch (Exception e) {
-                daoManager.rollbackTransaction();
-                throw new ServiceException(String.format("Can`t insert (%s)", user), e);
-            }
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t insert (%s)", user), e);
-        }
+        daoManagerFactory.getDAOManager().getUserDAO().insert(user);
     }
 
 
     @Override
     public List<User> getAll() {
-        try {
-            try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
-                daoManager.beginTransaction();
-                try {
-                    List<User> users = daoManager.getUserDAO().getAll();
-                    daoManager.commitTransaction();
-                    return users;
-                } catch (Exception e) {
-                    daoManager.rollbackTransaction();
-                    throw new ServiceException(String.format("Can't get all users"), e);
-                }
-            }
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can't get all users"), e);
-        }
+        return daoManagerFactory.getDAOManager().getUserDAO().getAll();
     }
 
 
     @Override
     public void update(User user) {
-        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
-            daoManager.beginTransaction();
-            try {
-                daoManager.getUserDAO().update(user);
-                daoManager.commitTransaction();
-            } catch (Exception e) {
-                daoManager.rollbackTransaction();
-                throw new ServiceException(String.format("Can`t update  (%s)", user), e);
-            }
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t update  (%s)", user), e);
-        }
+        daoManagerFactory.getDAOManager().getUserDAO().update(user);
     }
 
     @Override

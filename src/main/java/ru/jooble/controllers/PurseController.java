@@ -79,7 +79,7 @@ public class PurseController {
         } else {
             purseService.update(new Purse(Integer.parseInt(purseForm.getId()), purseForm.getName(), Integer.parseInt(purseForm.getCurrencyId()), Integer.parseInt(purseForm.getOwnerId()), new BigDecimal(purseForm.getAmount())));
         }
-        return showPageAllPurses(model);
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/user/save/purse/{id}", method = RequestMethod.GET)
@@ -107,7 +107,7 @@ public class PurseController {
             return PAGE_USER_SAVE_PURSE;
         }
         purseService.insert(new Purse(0, purseForm.getName(), Integer.parseInt(purseForm.getCurrencyId()), Integer.parseInt(purseForm.getOwnerId()), new BigDecimal(purseForm.getAmount())));
-        return showPageAllPurses(model);
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/delete/purse/{id}", method = RequestMethod.GET)
