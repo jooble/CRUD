@@ -8,9 +8,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-import ru.jooble.controllers.forms.UserForm;
 import ru.jooble.controllers.validator.UserFromValidator;
-import ru.jooble.domain.Purse;
+import ru.jooble.controllers.forms.UserForm;
 import ru.jooble.domain.User;
 import ru.jooble.service.UserService;
 

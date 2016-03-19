@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.jooble.controllers.forms.CurrencyForm;
 import ru.jooble.controllers.validator.CurrencyFromValidator;
-import ru.jooble.domain.Currency;
 import ru.jooble.service.CurrencyService;
+import ru.jooble.domain.Currency;
 
 
 @Controller
@@ -55,7 +55,8 @@ public class CurrencyController {
     public String saveCurrency(@Validated CurrencyForm currencyForm, BindingResult bindingResult, ModelMap model) {
         if (bindingResult.hasErrors()) {
             return SAVE_CURRENCY;
-        } if(currencyForm.getId().isEmpty()){
+        }
+        if (currencyForm.getId().isEmpty()) {
             currencyService.insert(new Currency(0, currencyForm.getShortName()));
         } else {
             currencyService.update(new Currency(Integer.parseInt(currencyForm.getId()), currencyForm.getShortName()));
@@ -69,3 +70,4 @@ public class CurrencyController {
         return new RedirectView("/all/currency");
     }
 }
+

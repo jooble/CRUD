@@ -5,7 +5,7 @@ import ru.jooble.domain.Currency;
 import java.util.List;
 
 
-public interface CurrencyDao {
+public interface CurrencyDAO {
 
     Currency getById(long id);
 

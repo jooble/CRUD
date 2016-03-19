@@ -25,7 +25,7 @@ public class PurseController {
     public static final String ALL_PURSE = "allPurse";
     public static final String ERROR_PAGE = "errorPage";
     public static final String SAVE_PURSE = "savePurse";
-    public static final String PAGE_USER_SAVE_PURSE = "testAddPurseToUser";
+    public static final String PAGE_USER_SAVE_PURSE = "addPurseToUser";
     @Autowired
     private CurrencyService currencyService;
     @Autowired
@@ -89,7 +89,7 @@ public class PurseController {
             return ERROR_PAGE;
         }
         model.addAttribute("purseForm", new PurseForm());
-       //TODO хотел передать целый объект, но валидатор ругается.
+        //TODO хотел передать целый объект, но валидатор ругается.
         model.addAttribute("ownerId", user.getId());
         model.addAttribute("currencies", currencyService.getAll());
         return PAGE_USER_SAVE_PURSE;
@@ -98,7 +98,7 @@ public class PurseController {
     @RequestMapping(value = "/user/save/purse/{id}", method = RequestMethod.POST)
     public String addPurseUser(@PathVariable(value = "id") Long id, @Validated PurseForm purseForm, BindingResult bindingResult, ModelMap model) {
         User user = userService.getById(id);
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             if (user == null) {
                 return ERROR_PAGE;
             }

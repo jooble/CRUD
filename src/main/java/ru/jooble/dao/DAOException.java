@@ -7,10 +7,10 @@ package ru.jooble.dao;
  *
  * @author Budnikov Aleksandr
  */
-public class DaoException extends RuntimeException {
+public class DAOException extends RuntimeException {
 
 
-    public DaoException(String message, Throwable cause) {
+    public DAOException(String message, Throwable cause) {
         super(message, cause);
     }
 }

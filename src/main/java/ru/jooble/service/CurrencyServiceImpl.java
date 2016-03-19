@@ -2,7 +2,8 @@ package ru.jooble.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.jooble.dao.CurrencyDao;
+import ru.jooble.dao.DAOManager;
+import ru.jooble.dao.DAOManagerFactory;
 import ru.jooble.domain.Currency;
 
 import java.util.List;
@@ -11,31 +12,88 @@ import java.util.List;
 public class CurrencyServiceImpl implements CurrencyService {
 
     @Autowired
-    private CurrencyDao currencyDao;
+    private DAOManagerFactory daoManagerFactory;
+
+    @Override
+    public Currency getById(long id) {
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                Currency currency = daoManager.getCurrencyDAO().getById(id);
+                daoManager.beginTransaction();
+                return currency;
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t currency get by id (%s)", id), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t currency get by id (%s)", id), e);
+        }
+    }
 
     @Override
     public List<Currency> getAll() {
-        return currencyDao.getAll();
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                List<Currency> currencies = daoManager.getCurrencyDAO().getAll();
+                daoManager.commitTransaction();
+                return currencies;
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Catn`t get all currency"), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Catn`t get all currency"), e);
+        }
     }
 
     @Override
     public void insert(Currency currency) {
-        currencyDao.insert(currency);
-    }
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                daoManager.getCurrencyDAO().insert(currency);
+                daoManager.commitTransaction();
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t insert (%s)", currency), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t insert (%s)", currency), e);
+        }
 
-    @Override
-    public Currency getById(long id) {
-        return currencyDao.getById(id);
     }
 
     @Override
     public void update(Currency currency) {
-        currencyDao.update(currency);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                daoManager.getCurrencyDAO().update(currency);
+                daoManager.commitTransaction();
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t update (%s)", currency), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t update (%s)", currency), e);
+        }
     }
 
     @Override
     public void deleteById(long id) {
-        currencyDao.deleteById(id);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                daoManager.getCurrencyDAO().deleteById(id);
+                daoManager.beginTransaction();
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t currency delete by id (%s)", id), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t currency delete by id (%s)", id), e);
+        }
     }
-
 }

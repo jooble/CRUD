@@ -4,7 +4,7 @@ import ru.jooble.domain.Purse;
 
 import java.util.List;
 
-public interface PurseDao {
+public interface PurseDAO {
 
 
     Purse getById(long id);
