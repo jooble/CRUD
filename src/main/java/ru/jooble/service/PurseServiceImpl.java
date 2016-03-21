@@ -2,7 +2,6 @@ package ru.jooble.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ru.jooble.dao.DAOManager;
 import ru.jooble.dao.DAOManagerFactory;
@@ -19,11 +18,6 @@ public class PurseServiceImpl implements PurseService {
     @Override
     public Purse getById(long id) {
         return daoManagerFactory.getDAOManager().getPurseDAO().getById(id);
-    }
-
-    @Override
-    public void insert(Purse purse) {
-        daoManagerFactory.getDAOManager().getPurseDAO().insert(purse);
     }
 
     @Override
@@ -47,12 +41,50 @@ public class PurseServiceImpl implements PurseService {
     }
 
     @Override
+    public void insert(Purse purse) {
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                daoManager.getPurseDAO().insert(purse);
+                daoManager.commitTransaction();
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t insert (%s)", purse), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t insert (%s)", purse), e);
+        }
+    }
+
+    @Override
     public void update(Purse purse) {
-        daoManagerFactory.getDAOManager().getPurseDAO().update(purse);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                daoManager.getPurseDAO().update(purse);
+                daoManager.commitTransaction();
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t update (%s)", purse), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t update (%s)", purse), e);
+        }
     }
 
     @Override
     public void deleteById(long id) {
-        daoManagerFactory.getDAOManager().getPurseDAO().deleteById(id);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                daoManager.getPurseDAO().deleteById(id);
+                daoManager.commitTransaction();
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t delete purse by id (%s)", id), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t delete purse by id (%s)", id), e);
+        }
     }
 }

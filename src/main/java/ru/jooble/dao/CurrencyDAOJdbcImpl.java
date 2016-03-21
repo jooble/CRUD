@@ -20,6 +20,7 @@ public class CurrencyDAOJdbcImpl implements CurrencyDAO {
     public static final String UPDATES_CURRENCY = "UPDATE currency SET name = ? WHERE id = ?";
     public static final String DELETE_CURRENCY = "DELETE FROM currency WHERE id = ?";
 
+
     private Connection connection;
 
     public CurrencyDAOJdbcImpl(Connection connection) {

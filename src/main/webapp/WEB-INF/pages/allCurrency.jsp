@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-<jsp:include page="topNavigationButtons.jsp" flush="true"/>
+    <jsp:include page="topNavigationButtons.jsp" flush="true"/>
     <h1><p class="text-center">All Currency</p></h1>
     <p align="right"><a class="btn btn-info btn-xs" href="/save/currency" role="button">add currency</a></p>
     <table class="table">

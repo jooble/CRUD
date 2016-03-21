@@ -2,10 +2,10 @@ package ru.jooble.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ru.jooble.dao.DAOManager;
 import ru.jooble.dao.DAOManagerFactory;
+import ru.jooble.domain.Purse;
 import ru.jooble.domain.User;
 
 import java.util.List;
@@ -22,20 +22,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void insert(User user) {
-        daoManagerFactory.getDAOManager().getUserDAO().insert(user);
-    }
-
-
-    @Override
     public List<User> getAll() {
         return daoManagerFactory.getDAOManager().getUserDAO().getAll();
     }
 
+    @Override
+    public void insert(User user) {
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                daoManager.getUserDAO().insert(user);
+                daoManager.commitTransaction();
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t insert (%s)", user), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t insert (%s)", user), e);
+        }
+    }
 
     @Override
     public void update(User user) {
-        daoManagerFactory.getDAOManager().getUserDAO().update(user);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                daoManager.getUserDAO().update(user);
+                daoManager.commitTransaction();
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t update  (%s)", user), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t update  (%s)", user), e);
+        }
     }
 
     @Override
@@ -43,7 +63,12 @@ public class UserServiceImpl implements UserService {
         try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
             daoManager.beginTransaction();
             try {
-                daoManager.getPurseDAO().deleteById(id);
+                List<Purse> purses = daoManager.getPurseDAO().getAll();
+                for (Purse purse : purses) {
+                    if (purse.getOwnerId() == id) {
+                        daoManager.getPurseDAO().deleteById(purse.getId());
+                    }
+                }
                 daoManager.getUserDAO().deleteById(id);
                 daoManager.commitTransaction();
             } catch (Exception e) {

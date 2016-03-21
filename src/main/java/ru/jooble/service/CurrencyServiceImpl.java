@@ -1,8 +1,8 @@
 package ru.jooble.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import ru.jooble.dao.DAOManager;
 import ru.jooble.dao.DAOManagerFactory;
 import ru.jooble.domain.Currency;
 
@@ -14,12 +14,10 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Autowired
     private DAOManagerFactory daoManagerFactory;
 
-
     @Override
     public Currency getById(long id) {
         return daoManagerFactory.getDAOManager().getCurrencyDAO().getById(id);
     }
-
 
     @Override
     public List<Currency> getAll() {
@@ -28,16 +26,50 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public void insert(Currency currency) {
-        daoManagerFactory.getDAOManager().getCurrencyDAO().insert(currency);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                daoManager.getCurrencyDAO().insert(currency);
+                daoManager.commitTransaction();
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t insert (%s)", currency), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t insert (%s)", currency), e);
+        }
+
     }
 
     @Override
     public void update(Currency currency) {
-        daoManagerFactory.getDAOManager().getCurrencyDAO().update(currency);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                daoManager.getCurrencyDAO().update(currency);
+                daoManager.commitTransaction();
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t update (%s)", currency), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t update (%s)", currency), e);
+        }
     }
 
     @Override
     public void deleteById(long id) {
-        daoManagerFactory.getDAOManager().getCurrencyDAO().deleteById(id);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            daoManager.beginTransaction();
+            try {
+                daoManager.getCurrencyDAO().deleteById(id);
+                daoManager.commitTransaction();
+            } catch (Exception e) {
+                daoManager.rollbackTransaction();
+                throw new ServiceException(String.format("Can`t currency delete by id (%s)", id), e);
+            }
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t currency delete by id (%s)", id), e);
+        }
     }
 }
