@@ -18,13 +18,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(long id) {
-        return daoManagerFactory.getDAOManager().getUserDAO().getById(id);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            return daoManager.getUserDAO().getById(id);
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t user get by id (%s)", id), e);
+        }
     }
 
     @Override
     public List<User> getAll() {
-        return daoManagerFactory.getDAOManager().getUserDAO().getAll();
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            return daoManager.getUserDAO().getAll();
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t purse get all"), e);
+        }
     }
+
 
     @Override
     public void insert(User user) {

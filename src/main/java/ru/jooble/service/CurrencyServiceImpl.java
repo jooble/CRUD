@@ -16,12 +16,20 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public Currency getById(long id) {
-        return daoManagerFactory.getDAOManager().getCurrencyDAO().getById(id);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+          return  daoManager.getCurrencyDAO().getById(id);
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t currency get by id (%s)", id), e);
+        }
     }
 
     @Override
     public List<Currency> getAll() {
-        return daoManagerFactory.getDAOManager().getCurrencyDAO().getAll();
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            return  daoManager.getCurrencyDAO().getAll();
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t currency get all"), e);
+        }
     }
 
     @Override

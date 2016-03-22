@@ -18,7 +18,11 @@ public class ExchangeServiceImpl implements ExchangeService {
 
     @Override
     public Exchange getById(long id) {
-        return daoManagerFactory.getDAOManager().getExchangeDAO().getById(id);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            return daoManager.getExchangeDAO().getById(id);
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t exchange get by id (%s)", id), e);
+        }
     }
 
     @Override

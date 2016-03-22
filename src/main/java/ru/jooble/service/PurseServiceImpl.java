@@ -17,26 +17,28 @@ public class PurseServiceImpl implements PurseService {
 
     @Override
     public Purse getById(long id) {
-        return daoManagerFactory.getDAOManager().getPurseDAO().getById(id);
+        try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
+            return daoManager.getPurseDAO().getById(id);
+        } catch (Exception e) {
+            throw new ServiceException(String.format("Can`t purse get by id (%s)", id), e);
+        }
     }
+
 
     @Override
     public List<Purse> getAll() {
         try (DAOManager daoManager = daoManagerFactory.getDAOManager()) {
-            daoManager.beginTransaction();
             try {
                 List<Purse> purses = daoManager.getPurseDAO().getAll();
                 for (Purse purse : purses) {
                     purse.setCurrencyShortName(daoManager.getCurrencyDAO().getById(purse.getCurrencyId()).getName());
                 }
-                daoManager.commitTransaction();
                 return purses;
             } catch (Exception e) {
-                daoManager.rollbackTransaction();
-                throw new ServiceException(String.format("Catn`t get all purse"), e);
+                throw new ServiceException(String.format("Can`t get all purse"), e);
             }
         } catch (Exception e) {
-            throw new ServiceException(String.format("Catn`t get all purse"), e);
+            throw new ServiceException(String.format("Can`t get all purse"), e);
         }
     }
 
