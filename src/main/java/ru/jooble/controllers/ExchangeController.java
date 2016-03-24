@@ -19,7 +19,6 @@ import ru.jooble.service.CurrencyService;
 import ru.jooble.service.ExchangeService;
 
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 public class ExchangeController {
@@ -77,17 +76,23 @@ public class ExchangeController {
             return SAVE_EXCHANGE;
         }
         if ("".equals(exchangeForm.getId())) {
-            exchangeService.insert(new Exchange(0, Long.parseLong(exchangeForm.getSourceCurrencyId()),
-                    Long.parseLong(exchangeForm.getTargetCurrencyId()), Double.parseDouble(exchangeForm.getExchangeRate())));
+            Currency sourceCurrency = currencyService.getById(Long.parseLong(exchangeForm.getSourceCurrencyId()));
+            Currency targetCurrency = currencyService.getById(Long.parseLong(exchangeForm.getTargetCurrencyId()));
+            exchangeService.insert(new Exchange(sourceCurrency,
+                    targetCurrency, Double.parseDouble(exchangeForm.getExchangeRate())));
         } else {
-            exchangeService.update(new Exchange(Long.parseLong(exchangeForm.getId()), Long.parseLong(exchangeForm.getSourceCurrencyId()),
-                    Long.parseLong(exchangeForm.getTargetCurrencyId()), Double.parseDouble(exchangeForm.getExchangeRate())));
+            Currency sourceCurrency = currencyService.getById(Long.parseLong(exchangeForm.getSourceCurrencyId()));
+            Currency targetCurrency = currencyService.getById(Long.parseLong(exchangeForm.getTargetCurrencyId()));
+            Exchange exchange = (new Exchange(sourceCurrency,
+                    targetCurrency, Double.parseDouble(exchangeForm.getExchangeRate())));
+            exchange.setId(Long.parseLong(exchangeForm.getId()));
+            exchangeService.update(exchange);
         }
         return "redirect:/all/exchange";
     }
 
     @RequestMapping(value = "/delete/exchange/{id}", method = RequestMethod.GET)
-    public RedirectView deleteExchange(@PathVariable(value = "id") Long id){
+    public RedirectView deleteExchange(@PathVariable(value = "id") Long id) {
         exchangeService.deleteById(id);
         return new RedirectView("/all/exchange");
     }

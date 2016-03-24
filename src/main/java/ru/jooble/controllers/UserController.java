@@ -6,10 +6,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.RedirectView;
-import ru.jooble.controllers.validator.UserFromValidator;
 import ru.jooble.controllers.forms.UserForm;
+import ru.jooble.controllers.validator.UserFromValidator;
 import ru.jooble.domain.User;
 import ru.jooble.service.UserService;
 
@@ -56,9 +59,11 @@ public class UserController {
             return SAVE_USER;
         }
         if ("".equals(userForm.getId())) {
-            userService.insert(new User(0, userForm.getFirstName(), userForm.getLastName()));
+            userService.insert(new User(userForm.getFirstName(), userForm.getLastName()));
         } else {
-            userService.update(new User(Integer.parseInt(userForm.getId()), userForm.getFirstName(), userForm.getLastName()));
+            User user = (new User(userForm.getFirstName(), userForm.getLastName()));
+            user.setId(Long.parseLong(userForm.getId()));
+            userService.update(user);
         }
         return "redirect:/all/user";
     }

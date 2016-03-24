@@ -25,9 +25,9 @@
             <thbody>
                 <tr>
                     <td>${purse.id}</td>
-                    <td>${purse.ownerId}</td>
+                    <td>${purse.owner.id}</td>
                     <td>${purse.name}</td>
-                    <td>${purse.currencyShortName}</td>
+                    <td>${purse.currency.name}</td>
                     <td>${purse.amount}</td>
                     <td>
                         <p>

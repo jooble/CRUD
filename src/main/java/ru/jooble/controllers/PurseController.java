@@ -6,10 +6,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.jooble.controllers.forms.PurseForm;
 import ru.jooble.controllers.validator.PurseFromValidator;
+import ru.jooble.domain.Currency;
 import ru.jooble.domain.Purse;
 import ru.jooble.domain.User;
 import ru.jooble.service.CurrencyService;
@@ -47,14 +51,6 @@ public class PurseController {
         return ALL_PURSE;
     }
 
-    @RequestMapping(value = "/save/purse", method = RequestMethod.GET)
-    public String showPageAddPurse(ModelMap model) {
-        model.addAttribute("purseForm", new PurseForm());
-        model.addAttribute("users", userService.getAll());
-        model.addAttribute("currencies", currencyService.getAll());
-        return SAVE_PURSE;
-    }
-
     @RequestMapping(value = "/save/purse/{id}", method = RequestMethod.GET)
     public String showPageEditPurse(@PathVariable(value = "id") Long id, ModelMap model) {
         Purse purse = purseService.getById(id);
@@ -62,7 +58,7 @@ public class PurseController {
             return ERROR_PAGE;
         }
         model.addAttribute("purseForm", new PurseForm(purse));
-        model.addAttribute("users", userService.getAll());
+        model.addAttribute("ownerId", purse.getOwner().getId());
         model.addAttribute("currencies", currencyService.getAll());
         return SAVE_PURSE;
     }
@@ -74,11 +70,11 @@ public class PurseController {
             model.addAttribute("currencies", currencyService.getAll());
             return SAVE_PURSE;
         }
-        if ("".equals(purseForm.getId())) {
-            purseService.insert(new Purse(0, purseForm.getName(), Integer.parseInt(purseForm.getCurrencyId()), Integer.parseInt(purseForm.getOwnerId()), new BigDecimal(purseForm.getAmount())));
-        } else {
-            purseService.update(new Purse(Integer.parseInt(purseForm.getId()), purseForm.getName(), Integer.parseInt(purseForm.getCurrencyId()), Integer.parseInt(purseForm.getOwnerId()), new BigDecimal(purseForm.getAmount())));
-        }
+        User user = userService.getById(Long.parseLong(purseForm.getOwnerId()));
+        Currency currency = currencyService.getById(Long.parseLong(purseForm.getCurrencyId()));
+        Purse purse = new Purse(purseForm.getName(), currency, user, new BigDecimal(purseForm.getAmount()));
+        purse.setId(Long.parseLong(purseForm.getId()));
+        purseService.update(purse);
         return "redirect:/";
     }
 
@@ -89,7 +85,6 @@ public class PurseController {
             return ERROR_PAGE;
         }
         model.addAttribute("purseForm", new PurseForm());
-        //TODO хотел передать целый объект, но валидатор ругается.
         model.addAttribute("ownerId", user.getId());
         model.addAttribute("currencies", currencyService.getAll());
         return PAGE_USER_SAVE_PURSE;
@@ -106,7 +101,9 @@ public class PurseController {
             model.addAttribute("currencies", currencyService.getAll());
             return PAGE_USER_SAVE_PURSE;
         }
-        purseService.insert(new Purse(0, purseForm.getName(), Integer.parseInt(purseForm.getCurrencyId()), Integer.parseInt(purseForm.getOwnerId()), new BigDecimal(purseForm.getAmount())));
+        Currency currency = currencyService.getById(Long.parseLong(purseForm.getCurrencyId()));
+        purseService.insert(new Purse(purseForm.getName(), currency, user,
+                new BigDecimal(purseForm.getAmount())));
         return "redirect:/";
     }
 

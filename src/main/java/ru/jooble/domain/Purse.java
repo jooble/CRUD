@@ -1,21 +1,33 @@
 package ru.jooble.domain;
 
 
+import javax.persistence.*;
 import java.math.BigDecimal;
-
+@Entity
 public class Purse {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
+    @Column(name = "name")
     private String name;
-    private int currencyId;
-    private String currencyShortName;
-    private int ownerId;
+    @ManyToOne
+    @JoinColumn(name = "currencyId")
+    private Currency currency;
+    @ManyToOne
+    @JoinColumn(name = "ownerId")
+    private User owner;
+    @Column(name = "amount")
     private BigDecimal amount;
 
-    public Purse(long id, String name, int currencyId, int ownerId, BigDecimal amount) {
-        this.id = id;
+    public Purse() {
+
+    }
+
+    public Purse(String name, Currency currency, User owner, BigDecimal amount) {
         this.name = name;
-        this.currencyId = currencyId;
-        this.ownerId = ownerId;
+        this.currency = currency;
+        this.owner = owner;
         this.amount = amount;
     }
 
@@ -35,28 +47,20 @@ public class Purse {
         this.name = name;
     }
 
-    public int getCurrencyId() {
-        return currencyId;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setCurrencyId(int currencyId) {
-        this.currencyId = currencyId;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
-    public String getCurrencyShortName() {
-        return currencyShortName;
+    public Currency getCurrency() {
+        return currency;
     }
 
-    public void setCurrencyShortName(String currencyShortName) {
-        this.currencyShortName = currencyShortName;
-    }
-
-    public int getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public BigDecimal getAmount() {
@@ -67,15 +71,4 @@ public class Purse {
         this.amount = amount;
     }
 
-    @Override
-    public String toString() {
-        return "Purse{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", currencyId=" + currencyId +
-                ", currencyShortName='" + currencyShortName + '\'' +
-                ", ownerId=" + ownerId +
-                ", amount=" + amount +
-                '}';
-    }
 }

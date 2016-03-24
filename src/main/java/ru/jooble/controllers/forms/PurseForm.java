@@ -1,7 +1,9 @@
 package ru.jooble.controllers.forms;
 
 
+import ru.jooble.domain.Currency;
 import ru.jooble.domain.Purse;
+import ru.jooble.domain.User;
 
 
 public class PurseForm {
@@ -19,11 +21,33 @@ public class PurseForm {
         this.id = Long.toString(purse.getId());
         this.name = purse.getName();
         this.amount = purse.getAmount().toString();
-        this.currencyId = Long.toString(purse.getCurrencyId());
-        this.ownerId = Long.toString(purse.getOwnerId());
+        this.currencyId = Long.toString(purse.getCurrency().getId());
+        this.ownerId = Long.toString(purse.getOwner().getId());
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getCurrencyId() {
         return currencyId;
@@ -41,30 +65,6 @@ public class PurseForm {
         this.ownerId = ownerId;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
     @Override
     public String toString() {
         return "PurseForm{" +
@@ -75,5 +75,4 @@ public class PurseForm {
                 ", ownerId='" + ownerId + '\'' +
                 '}';
     }
-
 }
