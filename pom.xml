@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.springapp</groupId>
-    <artifactId>PurseRedactor</artifactId>
+    <artifactId>CRUD-Redactor</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>PurseRedactor</name>
+    <name>CRUD-Redactor</name>
 
     <properties>
         <spring.version>4.1.1.RELEASE</spring.version>
@@ -57,6 +57,12 @@
         </dependency>
 
         <dependency>
+            <groupId> org.springframework </groupId>
+            <artifactId> spring-tx </artifactId>
+            <version> ${spring.version} </version>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
@@ -68,6 +74,8 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+
+
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -99,6 +107,23 @@
             <version>4.3.6.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.3.6.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId> javax.persistence </groupId>
+            <artifactId> persistence-api </artifactId>
+            <version> 1.0 </version>
+        </dependency>
+
+        <dependency>
+            <groupId> org.springframework </groupId>
+            <artifactId> spring-context </artifactId>
+            <version> ${spring.version} </version>
+        </dependency>
 
     </dependencies>
 

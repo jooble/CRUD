@@ -4,33 +4,17 @@ package ru.jooble.dao;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.jooble.domain.Exchange;
 
 import java.util.List;
 
-@Component
+@Repository
 public class ExchangeDAOImpl implements ExchangeDAO {
 
 
     @Autowired
     public SessionFactory sessionFactory;
-
-
-    @Override
-    public void beginTransaction() {
-        sessionFactory.getCurrentSession().beginTransaction();
-    }
-
-    @Override
-    public void commitTransaction() {
-        sessionFactory.getCurrentSession().getTransaction().commit();
-    }
-
-    @Override
-    public void rollbackTransaction() {
-        sessionFactory.getCurrentSession().getTransaction().rollback();
-    }
-
 
     @Override
     public Exchange getById(long id) {

@@ -3,9 +3,9 @@ package ru.jooble.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.jooble.dao.PurseDAO;
 import ru.jooble.dao.UserDAO;
-import ru.jooble.domain.Purse;
 import ru.jooble.domain.User;
 
 import java.util.List;
@@ -20,82 +20,33 @@ public class UserServiceImpl implements UserService {
     private PurseDAO purseDAO;
 
     @Override
+    @Transactional
     public User getById(long id) {
-        try {
-            userDAO.beginTransaction();
-            User user = userDAO.getById(id);
-            userDAO.commitTransaction();
-            return user;
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t user get by id (%s)", id), e);
-        }
+        return userDAO.getById(id);
     }
 
     @Override
+    @Transactional
     public List<User> getAll() {
-        try {
-            userDAO.beginTransaction();
-            List<User> users = userDAO.getAll();
-            userDAO.commitTransaction();
-            return users;
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t purse get all"), e);
-        }
+        return userDAO.getAll();
     }
 
-
     @Override
+    @Transactional
     public void insert(User user) {
-        try {
-            userDAO.beginTransaction();
-            try {
-                userDAO.insert(user);
-                userDAO.commitTransaction();
-            } catch (Exception e) {
-                userDAO.rollbackTransaction();
-                throw new ServiceException(String.format("Can`t insert (%s)", user), e);
-            }
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t insert (%s)", user), e);
-        }
+        userDAO.insert(user);
     }
 
     @Override
+    @Transactional
     public void update(User user) {
-        try {
-            userDAO.beginTransaction();
-            try {
-                userDAO.update(user);
-                userDAO.commitTransaction();
-            } catch (Exception e) {
-                userDAO.rollbackTransaction();
-                throw new ServiceException(String.format("Can`t update  (%s)", user), e);
-            }
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t update  (%s)", user), e);
-        }
+        userDAO.update(user);
     }
 
     @Override
+    @Transactional
     public void deleteById(long id) {
-        try {
-            userDAO.beginTransaction();
-            try {
-                List<Purse> purses = purseDAO.getAll();
-                for (Purse purse : purses) {
-                    if (purse.getOwner().getId() == id) {
-                        purseDAO.deleteById(purse.getId());
-                    }
-                }
-                userDAO.deleteById(id);
-                userDAO.commitTransaction();
-            } catch (Exception e) {
-                userDAO.rollbackTransaction();
-                throw new ServiceException(String.format("Can`t delete user by id (%s)", id), e);
-            }
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t delete user by id (%s)", id), e);
-        }
+        userDAO.deleteById(id);
     }
 }
 

@@ -6,12 +6,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import ru.jooble.controllers.forms.CurrencyForm;
 import ru.jooble.controllers.validator.CurrencyFromValidator;
-import ru.jooble.service.CurrencyService;
 import ru.jooble.domain.Currency;
+import ru.jooble.service.CurrencyService;
 
 
 @Controller
@@ -57,9 +59,12 @@ public class CurrencyController {
             return SAVE_CURRENCY;
         }
         if (currencyForm.getId().isEmpty()) {
-            currencyService.insert(new Currency(currencyForm.getShortName()));
+            Currency currency = new Currency();
+            currency.setName(currencyForm.getShortName());
+            currencyService.insert(currency);
         } else {
-            Currency currency = new Currency(currencyForm.getShortName());
+            Currency currency = new Currency();
+            currency.setName(currencyForm.getShortName());
             currency.setId(Long.parseLong(currencyForm.getId()));
             currencyService.update(currency);
         }
@@ -67,9 +72,13 @@ public class CurrencyController {
     }
 
     @RequestMapping(value = "/delete/currency/{id}", method = RequestMethod.GET)
-    public RedirectView deleteCurrency(@PathVariable(value = "id") Long id) {
-        currencyService.deleteById(id);
-        return new RedirectView("/all/currency");
+    public String deleteCurrency(@PathVariable(value = "id") Long id) {
+        try {
+            currencyService.deleteById(id);
+            return "redirect:/all/currency";
+        } catch (Exception e) {
+            return ERROR_PAGE;
+        }
     }
 }
 

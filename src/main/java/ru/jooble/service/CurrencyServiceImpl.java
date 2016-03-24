@@ -2,6 +2,7 @@ package ru.jooble.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.jooble.dao.CurrencyDAO;
 import ru.jooble.domain.Currency;
 
@@ -14,75 +15,32 @@ public class CurrencyServiceImpl implements CurrencyService {
     private CurrencyDAO currencyDAO;
 
     @Override
+    @Transactional
     public Currency getById(long id) {
-        try {
-            currencyDAO.beginTransaction();
-            Currency currency = currencyDAO.getById(id);
-            currencyDAO.commitTransaction();
-            return currency;
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t currency get by id (%s)", id), e);
-        }
+        return currencyDAO.getById(id);
     }
 
     @Override
+    @Transactional
     public List<Currency> getAll() {
-        try {
-            currencyDAO.beginTransaction();
-            List<Currency> currencies = currencyDAO.getAll();
-            currencyDAO.commitTransaction();
-            return currencies;
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t currency get all"), e);
-        }
+        return currencyDAO.getAll();
     }
 
     @Override
+    @Transactional
     public void insert(Currency currency) {
-        try {
-            currencyDAO.beginTransaction();
-            try {
-                currencyDAO.insert(currency);
-                currencyDAO.commitTransaction();
-            } catch (Exception e) {
-                currencyDAO.rollbackTransaction();
-                throw new ServiceException(String.format("Can`t insert (%s)", currency), e);
-            }
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t insert (%s)", currency), e);
-        }
-
+        currencyDAO.insert(currency);
     }
 
     @Override
+    @Transactional
     public void update(Currency currency) {
-        try {
-            currencyDAO.beginTransaction();
-            try {
-                currencyDAO.update(currency);
-                currencyDAO.commitTransaction();
-            } catch (Exception e) {
-                currencyDAO.rollbackTransaction();
-                throw new ServiceException(String.format("Can`t update (%s)", currency), e);
-            }
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t update (%s)", currency), e);
-        }
+        currencyDAO.update(currency);
     }
 
     @Override
+    @Transactional
     public void deleteById(long id) {
-        try {
-            currencyDAO.beginTransaction();
-            try {
-                currencyDAO.deleteById(id);
-                currencyDAO.commitTransaction();
-            } catch (Exception e) {
-                currencyDAO.rollbackTransaction();
-                throw new ServiceException(String.format("Can`t currency delete by id (%s)", id), e);
-            }
-        } catch (Exception e) {
-            throw new ServiceException(String.format("Can`t currency delete by id (%s)", id), e);
-        }
+        currencyDAO.deleteById(id);
     }
 }
