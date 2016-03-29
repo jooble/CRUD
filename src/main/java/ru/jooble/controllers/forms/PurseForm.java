@@ -1,9 +1,7 @@
 package ru.jooble.controllers.forms;
 
 
-import ru.jooble.domain.Currency;
 import ru.jooble.domain.Purse;
-import ru.jooble.domain.User;
 
 
 public class PurseForm {

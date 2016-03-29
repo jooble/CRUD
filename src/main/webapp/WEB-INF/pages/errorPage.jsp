@@ -4,12 +4,15 @@
 <html>
 <head>
     <title>Error Page</title>
-    <jsp:include page="setupBootstrapPage.jsp" flush="true"/>
+    <jsp:include page="setupPage.jsp" flush="true"/>
 </head>
 <body>
 <div class="container">
     <jsp:include page="topNavigationButtons.jsp" flush="true"/>
-    <div class="alert alert-danger" role="alert"><p class="text-center">Oh oh oh, you think something broke.</p></div>
+    <div class="alert alert-danger" role="alert"><p class="text-center">Oh oh oh, you think something broke.</p>
+
+        <p class="text-center">${error}</p>
+    </div>
 </div>
 </body>
 </html>

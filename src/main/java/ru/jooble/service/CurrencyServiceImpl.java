@@ -41,6 +41,16 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     @Transactional
     public void deleteById(long id) {
-        currencyDAO.deleteById(id);
+        try {
+            currencyDAO.deleteById(id);
+        } catch (Exception e) {
+            throw new canNotDelete(String.format("Can`t delete currency. Id - (%)", id), e);
+        }
+    }
+
+    class canNotDelete extends RuntimeException {
+        public canNotDelete(String message, Throwable cause) {
+            super(message, cause);
+        }
     }
 }

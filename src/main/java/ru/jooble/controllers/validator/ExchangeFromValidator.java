@@ -15,12 +15,12 @@ public class ExchangeFromValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "exchangeRate", "valid.exchangeRate.empty");
-            ExchangeForm message = (ExchangeForm) target;
-            try {
-                Double.parseDouble(message.getExchangeRate());
-            } catch (Exception e) {
-                errors.rejectValue("exchangeRate", "valid.exchangeRate.notNumber");
-            }
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "exchangeRate", "valid.exchangeRate.empty");
+        ExchangeForm message = (ExchangeForm) target;
+        try {
+            Double.parseDouble(message.getExchangeRate());
+        } catch (Exception e) {
+            errors.rejectValue("exchangeRate", "valid.exchangeRate.notNumber");
+        }
     }
 }

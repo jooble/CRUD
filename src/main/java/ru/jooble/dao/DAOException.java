@@ -2,7 +2,7 @@ package ru.jooble.dao;
 
 /**
  * Исключение дао слоя
- * <p/>
+ * <p>
  * http://it-channel.ru/
  *
  * @author Budnikov Aleksandr

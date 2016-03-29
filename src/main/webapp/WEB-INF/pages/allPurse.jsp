@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>All Purse</title>
-    <jsp:include page="setupBootstrapPage.jsp" flush="true"/>
+    <jsp:include page="setupPage.jsp" flush="true"/>
 </head>
 <body>
 <div class="container">

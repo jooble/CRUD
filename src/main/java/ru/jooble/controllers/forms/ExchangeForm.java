@@ -1,7 +1,6 @@
 package ru.jooble.controllers.forms;
 
 
-import ru.jooble.domain.Currency;
 import ru.jooble.domain.Exchange;
 
 public class ExchangeForm {
