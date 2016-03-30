@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ru.jooble.DTO.CurrencyDTO;
 import ru.jooble.controllers.forms.CurrencyForm;
 import ru.jooble.controllers.validator.CurrencyFromValidator;
 import ru.jooble.domain.Currency;
+import ru.jooble.service.CanNotDeleteCurrencyException;
 import ru.jooble.service.CurrencyService;
 
 
@@ -59,27 +61,29 @@ public class CurrencyController {
             return SAVE_CURRENCY;
         }
         if (currencyForm.getId().isEmpty()) {
-            Currency currency = getCurrency(currencyForm);
-            currencyService.insert(currency);
+            CurrencyDTO currencyDTO = getCurrencyDTO(currencyForm);
+            currencyService.insert(currencyDTO);
         } else {
-            Currency currency = getCurrency(currencyForm);
-            currency.setId(Long.parseLong(currencyForm.getId()));
-            currencyService.update(currency);
+            CurrencyDTO currencyDTO = getCurrencyDTO(currencyForm);
+            currencyDTO.setId(currencyForm.getId());
+            currencyService.update(currencyDTO);
         }
         return "redirect:/all/currency";
     }
 
-    private Currency getCurrency(@Validated CurrencyForm currencyForm) {
-        Currency currency = new Currency();
-        currency.setName(currencyForm.getShortName());
-        return currency;
+    private CurrencyDTO getCurrencyDTO(@Validated CurrencyForm currencyForm) {
+        CurrencyDTO currencyDTO = new CurrencyDTO();
+        currencyDTO.setName(currencyForm.getShortName());
+        return currencyDTO;
     }
+
 
     @RequestMapping(value = "/delete/currency/{id}", method = RequestMethod.GET)
     public String deleteCurrency(@PathVariable(value = "id") Long id, ModelMap model) {
         try {
             currencyService.deleteById(id);
             return "redirect:/all/currency";
+            //TODO напомнить, что не получилось
         } catch (Exception e) {
             model.addAttribute("error", "Can`t delete by Currency");
             return ERROR_PAGE;

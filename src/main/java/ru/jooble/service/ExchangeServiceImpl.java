@@ -16,13 +16,13 @@ public class ExchangeServiceImpl implements ExchangeService {
     private ExchangeDAO exchangeDAO;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Exchange getById(long id) {
         return exchangeDAO.getById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Exchange> getAll() {
         return exchangeDAO.getAll();
     }

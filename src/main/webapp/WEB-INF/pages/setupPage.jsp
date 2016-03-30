@@ -8,12 +8,21 @@
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
+
+<script type="text/javascript" src="/js/windowButtonDelete.js"></script>
+
+
+
+
+<%--===================================================================--%>
+
 <script>
-    function deleteCurrency($currencyId) {
-        if (confirm("Are you sure you want to remove the currency? " + "\n" + "ID -" + $currencyId)) {
-            document.location.href = "/delete/currency/" + $currencyId;
-        } else {
-            document.location.href = "/";
-        }
-    }
+//TODO jstl message properties
+function deleteCurrency($currencyId) {
+if (confirm("Are you sure you want to remove the currency?")) {
+document.location.href = "/delete/currency/" + $currencyId;
+} else {
+document.location.href = "/";
+}
+}
 </script>

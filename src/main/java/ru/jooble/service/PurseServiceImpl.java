@@ -16,13 +16,13 @@ public class PurseServiceImpl implements PurseService {
     private PurseDAO purseDAO;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Purse getById(long id) {
         return purseDAO.getById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Purse> getAll() {
         return purseDAO.getAll();
     }

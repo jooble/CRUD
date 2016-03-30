@@ -3,7 +3,9 @@ package ru.jooble.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.jooble.DTO.CurrencyDTO;
 import ru.jooble.dao.CurrencyDAO;
+import ru.jooble.dao.PurseDAO;
 import ru.jooble.domain.Currency;
 
 import java.util.List;
@@ -14,28 +16,32 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Autowired
     private CurrencyDAO currencyDAO;
 
+    @Autowired
+    private PurseDAO purseDAO;
+
+
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Currency getById(long id) {
         return currencyDAO.getById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Currency> getAll() {
         return currencyDAO.getAll();
     }
 
     @Override
     @Transactional
-    public void insert(Currency currency) {
-        currencyDAO.insert(currency);
+    public void insert(CurrencyDTO currencyDTO) {
+        currencyDAO.insert(currencyDTOInTheCurrency(currencyDTO));
     }
 
     @Override
     @Transactional
-    public void update(Currency currency) {
-        currencyDAO.update(currency);
+    public void update(CurrencyDTO currencyDTO) {
+        currencyDAO.update(currencyDTOInTheCurrency(currencyDTO));
     }
 
     @Override
@@ -44,13 +50,19 @@ public class CurrencyServiceImpl implements CurrencyService {
         try {
             currencyDAO.deleteById(id);
         } catch (Exception e) {
-            throw new canNotDelete(String.format("Can`t delete currency. Id - (%)", id), e);
+            throw new CanNotDeleteCurrencyException(String.format("Can`t delete currency. Id - (%)", id), e);
         }
     }
 
-    class canNotDelete extends RuntimeException {
-        public canNotDelete(String message, Throwable cause) {
-            super(message, cause);
+    private Currency currencyDTOInTheCurrency(CurrencyDTO currencyDTO) {
+        Currency currency = new Currency();
+        if (currencyDTO.getId() == null) {
+            currency.setName(currencyDTO.getName());
+        } else {
+            currency.setId(Long.parseLong(currencyDTO.getId()));
+            currency.setName(currencyDTO.getName());
         }
+
+        return currency;
     }
 }

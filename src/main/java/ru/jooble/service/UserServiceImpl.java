@@ -4,7 +4,6 @@ package ru.jooble.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.jooble.dao.PurseDAO;
 import ru.jooble.dao.UserDAO;
 import ru.jooble.domain.User;
 
@@ -16,17 +15,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDAO userDAO;
 
-    @Autowired
-    private PurseDAO purseDAO;
-
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User getById(long id) {
         return userDAO.getById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<User> getAll() {
         return userDAO.getAll();
     }
