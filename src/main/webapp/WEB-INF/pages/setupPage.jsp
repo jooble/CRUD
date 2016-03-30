@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css"/>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
@@ -9,20 +10,4 @@
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 
-<script type="text/javascript" src="/js/windowButtonDelete.js"></script>
-
-
-
-
-<%--===================================================================--%>
-
-<script>
-//TODO jstl message properties
-function deleteCurrency($currencyId) {
-if (confirm("Are you sure you want to remove the currency?")) {
-document.location.href = "/delete/currency/" + $currencyId;
-} else {
-document.location.href = "/";
-}
-}
-</script>
+<script type="text/javascript" src="<c:url value="/resources/js/windowButtonDelete.js" />"></script>

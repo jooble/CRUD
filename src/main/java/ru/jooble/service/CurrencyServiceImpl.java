@@ -49,7 +49,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void deleteById(long id) {
         try {
             currencyDAO.deleteById(id);
-        } catch (Exception e) {
+        } catch (CanNotDeleteCurrencyException e) {
             throw new CanNotDeleteCurrencyException(String.format("Can`t delete currency. Id - (%)", id), e);
         }
     }
