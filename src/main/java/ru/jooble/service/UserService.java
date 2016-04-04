@@ -1,17 +1,17 @@
 package ru.jooble.service;
 
-import ru.jooble.domain.User;
+import ru.jooble.DTO.UserDTO;
 
 import java.util.List;
 
 public interface UserService {
-    User getById(long id);
+    UserDTO getById(long id);
 
-    void insert(User user);
+    void insert(UserDTO userDTO);
 
-    List<User> getAll();
+    List<UserDTO> getAll();
 
-    void update(User user);
+    void update(UserDTO userDTO);
 
     void deleteById(long id);
 }

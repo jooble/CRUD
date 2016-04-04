@@ -3,7 +3,6 @@ package ru.jooble.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "exchange")
 public class Exchange {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +19,6 @@ public class Exchange {
     private double exchangeRate;
 
     public Exchange() {
-
     }
 
     public long getId() {

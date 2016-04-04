@@ -1,18 +1,18 @@
 package ru.jooble.service;
 
-import ru.jooble.domain.Purse;
+import ru.jooble.DTO.PurseDTO;
 
 import java.util.List;
 
 public interface PurseService {
 
-    Purse getById(long id);
+    PurseDTO getById(long id);
 
-    void insert(Purse purse);
+    void insert(PurseDTO purseDTO);
 
-    List<Purse> getAll();
+    List<PurseDTO> getAll();
 
-    void update(Purse purse);
+    void update(PurseDTO purseDTO);
 
     void deleteById(long id);
 }

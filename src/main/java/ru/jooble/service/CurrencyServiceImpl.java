@@ -3,11 +3,12 @@ package ru.jooble.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.jooble.DTO.ConverterDTOToDomain;
 import ru.jooble.DTO.CurrencyDTO;
 import ru.jooble.dao.CurrencyDAO;
-import ru.jooble.dao.PurseDAO;
 import ru.jooble.domain.Currency;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,31 +18,36 @@ public class CurrencyServiceImpl implements CurrencyService {
     private CurrencyDAO currencyDAO;
 
     @Autowired
-    private PurseDAO purseDAO;
-
+    private ConverterDTOToDomain converterDTOToDomain;
 
     @Override
     @Transactional(readOnly = true)
-    public Currency getById(long id) {
-        return currencyDAO.getById(id);
+    public CurrencyDTO getById(long id) {
+        return new CurrencyDTO(currencyDAO.getById(id));
     }
 
+
     @Override
     @Transactional(readOnly = true)
-    public List<Currency> getAll() {
-        return currencyDAO.getAll();
+    public List<CurrencyDTO> getAll() {
+        List<Currency> currencies = currencyDAO.getAll();
+        List<CurrencyDTO> currencyDTOs = new ArrayList<>();
+        for (Currency currency : currencies) {
+            currencyDTOs.add(new CurrencyDTO(currency));
+        }
+        return currencyDTOs;
     }
 
     @Override
     @Transactional
     public void insert(CurrencyDTO currencyDTO) {
-        currencyDAO.insert(currencyDTOInTheCurrency(currencyDTO));
+        currencyDAO.insert(converterDTOToDomain.convertCurrencyDTOToTheCurrency(currencyDTO));
     }
 
     @Override
     @Transactional
     public void update(CurrencyDTO currencyDTO) {
-        currencyDAO.update(currencyDTOInTheCurrency(currencyDTO));
+        currencyDAO.update(converterDTOToDomain.convertCurrencyDTOToTheCurrency(currencyDTO));
     }
 
     @Override
@@ -54,15 +60,14 @@ public class CurrencyServiceImpl implements CurrencyService {
         }
     }
 
-    private Currency currencyDTOInTheCurrency(CurrencyDTO currencyDTO) {
-        Currency currency = new Currency();
-        if (currencyDTO.getId() == null) {
-            currency.setName(currencyDTO.getName());
-        } else {
-            currency.setId(Long.parseLong(currencyDTO.getId()));
-            currency.setName(currencyDTO.getName());
+    @Override
+    @Transactional(readOnly = true)
+    public List<CurrencyDTO> getByCriteria(String criteria) {
+        List<Currency> currencies = currencyDAO.getByCriteria(criteria);
+        List<CurrencyDTO> currencyDTOs = new ArrayList<>();
+        for (Currency currency : currencies) {
+            currencyDTOs.add(new CurrencyDTO(currency));
         }
-
-        return currency;
+        return currencyDTOs;
     }
 }

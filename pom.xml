@@ -124,6 +124,12 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>4.3.6.Final</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.RedirectView;
+import ru.jooble.DTO.CurrencyDTO;
+import ru.jooble.DTO.ExchangeDTO;
 import ru.jooble.controllers.forms.ExchangeForm;
 import ru.jooble.controllers.validator.ExchangeFromValidator;
-import ru.jooble.domain.Currency;
-import ru.jooble.domain.Exchange;
 import ru.jooble.service.CurrencyService;
 import ru.jooble.service.ExchangeService;
 
@@ -22,8 +22,8 @@ import java.util.List;
 
 @Controller
 public class ExchangeController {
-    public static final String ERROR_PAGE = "errorPage";
-    public static final String SAVE_EXCHANGE = "saveExchange";
+    private static final String ERROR_PAGE = "errorPage";
+    private static final String SAVE_EXCHANGE = "saveExchange";
 
     @Autowired
     ExchangeService exchangeService;
@@ -46,54 +46,54 @@ public class ExchangeController {
 
     @RequestMapping(value = "/save/exchange", method = RequestMethod.GET)
     public String showPageAddExchange(ModelMap model) {
-        List<Currency> currencies = currencyService.getAll();
+        List<CurrencyDTO> currencyDTOs = currencyService.getAll();
         model.addAttribute("exchangeForm", new ExchangeForm());
-        model.addAttribute("sourceCurrencies", currencies);
-        model.addAttribute("targetCurrencies", currencies);
+        model.addAttribute("sourceCurrencies", currencyDTOs);
+        model.addAttribute("targetCurrencies", currencyDTOs);
         return SAVE_EXCHANGE;
     }
 
     @RequestMapping(value = "/save/exchange/{id}", method = RequestMethod.GET)
     public String showPageEditExchange(@PathVariable(value = "id") Long id, ModelMap model) {
-        Exchange exchange = exchangeService.getById(id);
-        List<Currency> currencies = currencyService.getAll();
-        if (exchange == null) {
+        try {
+            ExchangeDTO exchangeDTO = exchangeService.getById(id);
+            List<CurrencyDTO> currencyDTOs = currencyService.getAll();
+            model.addAttribute("exchangeForm", new ExchangeForm(exchangeDTO));
+            model.addAttribute("sourceCurrencies", currencyDTOs);
+            model.addAttribute("targetCurrencies", currencyDTOs);
+        } catch (NullPointerException e) {
             return ERROR_PAGE;
         }
-        model.addAttribute("exchangeForm", new ExchangeForm(exchange));
-        model.addAttribute("sourceCurrencies", currencies);
-        model.addAttribute("targetCurrencies", currencies);
-
         return SAVE_EXCHANGE;
     }
 
     @RequestMapping(value = "/save/exchange", method = RequestMethod.POST)
     public String saveExchange(@Validated ExchangeForm exchangeForm, BindingResult bindingResult, ModelMap model) {
         if (bindingResult.hasErrors()) {
-            List<Currency> currencies = currencyService.getAll();
-            model.addAttribute("sourceCurrencies", currencies);
-            model.addAttribute("targetCurrencies", currencies);
+            List<CurrencyDTO> currencyDTOs = currencyService.getAll();
+            model.addAttribute("sourceCurrencies", currencyDTOs);
+            model.addAttribute("targetCurrencies", currencyDTOs);
             return SAVE_EXCHANGE;
         }
+        CurrencyDTO sorceCurrency = currencyService.getById(Long.parseLong(exchangeForm.getSourceCurrencyId()));
+        CurrencyDTO targetCurrency = currencyService.getById(Long.parseLong(exchangeForm.getTargetCurrencyId()));
         if ("".equals(exchangeForm.getId())) {
-            Exchange exchange = getExchange(exchangeForm);
-            exchangeService.insert(exchange);
+            ExchangeDTO exchangeDTO = getExchangeDTO(exchangeForm, sorceCurrency, targetCurrency);
+            exchangeService.insert(exchangeDTO);
         } else {
-            Exchange exchange = getExchange(exchangeForm);
-            exchange.setId(Long.parseLong(exchangeForm.getId()));
-            exchangeService.update(exchange);
+            ExchangeDTO exchangeDTO = getExchangeDTO(exchangeForm, sorceCurrency, targetCurrency);
+            exchangeDTO.setId(exchangeForm.getId());
+            exchangeService.update(exchangeDTO);
         }
         return "redirect:/all/exchange";
     }
 
-    private Exchange getExchange(@Validated ExchangeForm exchangeForm) {
-        Currency sourceCurrency = currencyService.getById(Long.parseLong(exchangeForm.getSourceCurrencyId()));
-        Currency targetCurrency = currencyService.getById(Long.parseLong(exchangeForm.getTargetCurrencyId()));
-        Exchange exchange = new Exchange();
-        exchange.setSourceCurrency(sourceCurrency);
-        exchange.setTargetCurrency(targetCurrency);
-        exchange.setExchangeRate(Double.parseDouble(exchangeForm.getExchangeRate()));
-        return exchange;
+    private ExchangeDTO getExchangeDTO(@Validated ExchangeForm exchangeForm, CurrencyDTO sorceCurrency, CurrencyDTO targetCurrency) {
+        ExchangeDTO exchangeDTO = new ExchangeDTO();
+        exchangeDTO.setSourceCurrency(sorceCurrency);
+        exchangeDTO.setTargetCurrency(targetCurrency);
+        exchangeDTO.setExchangeRate(exchangeForm.getExchangeRate());
+        return exchangeDTO;
     }
 
     @RequestMapping(value = "/delete/exchange/{id}", method = RequestMethod.GET)

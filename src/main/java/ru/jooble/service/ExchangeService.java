@@ -1,19 +1,19 @@
 package ru.jooble.service;
 
 
-import ru.jooble.domain.Exchange;
+import ru.jooble.DTO.ExchangeDTO;
 
 import java.util.List;
 
 public interface ExchangeService {
 
-    Exchange getById(long id);
+    ExchangeDTO getById(long id);
 
-    void insert(Exchange exchange);
+    void insert(ExchangeDTO exchangeDTO);
 
-    List<Exchange> getAll();
+    List<ExchangeDTO> getAll();
 
-    void update(Exchange exchange);
+    void update(ExchangeDTO exchangeDTO);
 
     void deleteById(long id);
 

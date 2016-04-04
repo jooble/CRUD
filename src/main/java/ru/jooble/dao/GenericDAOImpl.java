@@ -1,8 +1,6 @@
 package ru.jooble.dao;
 
 
-import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -11,7 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-@Repository
+
 public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
 
     @PersistenceContext
@@ -37,8 +35,8 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
     public List<T> getAll() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(type);
-        Root<T> currency = cq.from(type);
-        CriteriaQuery<T> all = cq.select(currency);
+        Root<T> entity = cq.from(type);
+        CriteriaQuery<T> all = cq.select(entity);
         TypedQuery<T> q = entityManager.createQuery(all);
         List<T> tList = q.getResultList();
         return tList;

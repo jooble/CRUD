@@ -1,15 +1,14 @@
-function deleteCurrency($currencyId) {
-    if (confirm("Are you sure you want to remove the currency?")) {
+function deleteCurrency(currencyId, message) {
+    if (confirm(message)) {
         $.ajax({
-            url: "/delete/currency/" + $currencyId, success: function (result) {
-                $("#tableAllcurrency").html(result)
+            type: "POST",
+            url: "/delete/currency/" + currencyId,
+            success: function (result) {
+                $("#trCurrencyId" + currencyId).remove();
+            },
+            error: function () {
+                alert("Can`t delete currency");
             }
-        })
-    } else {
-        $.ajax({
-            url: "/all/currency/", success: function (result) {
-                $("#tableAllcurrency").html(result)
-            }
-        })
+        });
     }
 }

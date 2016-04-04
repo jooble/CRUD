@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.RedirectView;
+import ru.jooble.DTO.UserDTO;
 import ru.jooble.controllers.forms.UserForm;
 import ru.jooble.controllers.validator.UserFromValidator;
-import ru.jooble.domain.User;
 import ru.jooble.service.UserService;
 
 @Controller
 public class UserController {
-    public static final String ALL_USER = "allUser";
-    public static final String SAVE_USER = "saveUser";
-    public static final String ERROR_PAGE = "errorPage";
+    private static final String ALL_USER = "allUser";
+    private static final String SAVE_USER = "saveUser";
+    private static final String ERROR_PAGE = "errorPage";
     @Autowired
     private UserFromValidator userFromValidator;
     @Autowired
@@ -45,36 +45,38 @@ public class UserController {
 
     @RequestMapping(value = "/save/user/{id}", method = RequestMethod.GET)
     public String showPageEditUser(@PathVariable(value = "id") Long id, ModelMap model) {
-        User user = userService.getById(id);
-        if (user == null) {
+        try {
+            UserDTO userDTO = userService.getById(id);
+            model.addAttribute("userForm", new UserForm(userDTO));
+            return SAVE_USER;
+        } catch (NullPointerException e) {
             return ERROR_PAGE;
         }
-        model.addAttribute("userForm", new UserForm(user));
-        return SAVE_USER;
     }
 
     @RequestMapping(value = "/save/user", method = RequestMethod.POST)
-    public String saveUser(@Validated UserForm userForm, BindingResult bindingResult, ModelMap model) {
+    public String saveUser(@Validated UserForm userForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return SAVE_USER;
         }
         if ("".equals(userForm.getId())) {
-            User user = getUser(userForm);
-            userService.insert(user);
+            UserDTO userDTO = getUserDTO(userForm);
+            userService.insert(userDTO);
         } else {
-            User user = getUser(userForm);
-            user.setId(Long.parseLong(userForm.getId()));
-            userService.update(user);
+            UserDTO userDTO = getUserDTO(userForm);
+            userDTO.setId(userForm.getId());
+            userService.update(userDTO);
         }
         return "redirect:/all/user";
     }
 
-    private User getUser(@Validated UserForm userForm) {
-        User user = new User();
-        user.setFirstName(userForm.getFirstName());
-        user.setLastName(userForm.getLastName());
-        return user;
+    private UserDTO getUserDTO(@Validated UserForm userForm) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setFirstName(userForm.getFirstName());
+        userDTO.setLastName(userForm.getLastName());
+        return userDTO;
     }
+
 
     @RequestMapping(value = "/delete/user/{id}", method = RequestMethod.GET)
     public RedirectView deleteUser(@PathVariable(value = "id") Long id) {

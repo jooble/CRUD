@@ -1,7 +1,7 @@
 package ru.jooble.controllers.forms;
 
 
-import ru.jooble.domain.Exchange;
+import ru.jooble.DTO.ExchangeDTO;
 
 public class ExchangeForm {
     private String id;
@@ -14,11 +14,11 @@ public class ExchangeForm {
 
     }
 
-    public ExchangeForm(Exchange exchange) {
-        this.id = Long.toString(exchange.getId());
-        this.sourceCurrencyId = Long.toString(exchange.getSourceCurrency().getId());
-        this.targetCurrencyId = Long.toString(exchange.getTargetCurrency().getId());
-        this.exchangeRate = Double.toString(exchange.getExchangeRate());
+    public ExchangeForm(ExchangeDTO exchangeDTO) {
+        this.id = exchangeDTO.getId();
+        this.sourceCurrencyId = exchangeDTO.getSourceCurrency().getId();
+        this.targetCurrencyId = exchangeDTO.getTargetCurrency().getId();
+        this.exchangeRate = exchangeDTO.getExchangeRate();
     }
 
     public String getId() {

@@ -14,15 +14,17 @@ import ru.jooble.DTO.CurrencyDTO;
 import ru.jooble.controllers.forms.CurrencyForm;
 import ru.jooble.controllers.validator.CurrencyFromValidator;
 import ru.jooble.domain.Currency;
-import ru.jooble.service.CanNotDeleteCurrencyException;
 import ru.jooble.service.CurrencyService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
 public class CurrencyController {
-    public static final String ALL_CURRENCY = "allCurrency";
-    public static final String SAVE_CURRENCY = "saveCurrency";
-    public static final String ERROR_PAGE = "errorPage";
+    private static final String ALL_CURRENCY = "allCurrency";
+    private static final String SAVE_CURRENCY = "saveCurrency";
+    private static final String ERROR_PAGE = "errorPage";
     @Autowired
     private CurrencyService currencyService;
     @Autowired
@@ -47,12 +49,13 @@ public class CurrencyController {
 
     @RequestMapping(value = "/save/currency/{id}", method = RequestMethod.GET)
     public String showPageEditCurrency(@PathVariable(value = "id") Long id, ModelMap model) {
-        Currency currency = currencyService.getById(id);
-        if (currency == null) {
+        try {
+            CurrencyDTO currencyDTO = currencyService.getById(id);
+            model.addAttribute("currencyForm", new CurrencyForm(currencyDTO));
+            return SAVE_CURRENCY;
+        } catch (NullPointerException e) {
             return ERROR_PAGE;
         }
-        model.addAttribute("currencyForm", new CurrencyForm(currency));
-        return SAVE_CURRENCY;
     }
 
     @RequestMapping(value = "/save/currency", method = RequestMethod.POST)
@@ -60,7 +63,7 @@ public class CurrencyController {
         if (bindingResult.hasErrors()) {
             return SAVE_CURRENCY;
         }
-        if (currencyForm.getId().isEmpty()) {
+        if ("".equals(currencyForm.getId())) {
             CurrencyDTO currencyDTO = getCurrencyDTO(currencyForm);
             currencyService.insert(currencyDTO);
         } else {
@@ -77,17 +80,19 @@ public class CurrencyController {
         return currencyDTO;
     }
 
-
-    @RequestMapping(value = "/delete/currency/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/currency/{id}", method = RequestMethod.POST)
     public String deleteCurrency(@PathVariable(value = "id") Long id, ModelMap model) {
-        try {
-            currencyService.deleteById(id);
-            return "redirect:/all/currency";
-            //TODO напомнить, что не получилось
-        } catch (Exception e) {
-            model.addAttribute("error", "Can`t delete by Currency");
-            return ERROR_PAGE;
-        }
+        currencyService.deleteById(id);
+        return "redirect:/all/currency";
+    }
+
+    @RequestMapping(value = "/all/currency/search/{criteria}", method = RequestMethod.GET)
+    public String searchCurrency(@PathVariable(value = "criteria") String criteria, ModelMap model) {
+        List<Currency> currencies = new ArrayList<>();
+        model.addAttribute("currencies", currencyService.getByCriteria(criteria));
+        model.addAttribute("criteria", criteria);
+        return "tableAllCurrency";
     }
 }
+
 

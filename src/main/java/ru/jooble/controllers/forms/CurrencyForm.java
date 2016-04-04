@@ -1,7 +1,7 @@
 package ru.jooble.controllers.forms;
 
 
-import ru.jooble.domain.Currency;
+import ru.jooble.DTO.CurrencyDTO;
 
 public class CurrencyForm {
     private String id;
@@ -11,9 +11,9 @@ public class CurrencyForm {
 
     }
 
-    public CurrencyForm(Currency currency) {
-        this.id = Long.toString(currency.getId());
-        this.shortName = currency.getName();
+    public CurrencyForm(CurrencyDTO currencyDTO) {
+        this.id = currencyDTO.getId();
+        this.shortName = currencyDTO.getName();
     }
 
     public String getId() {

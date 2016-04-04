@@ -21,13 +21,13 @@
             <th>Actions</th>
         </tr>
         </thead>
-        <c:forEach var="purse" items="${purses}">
-            <thbody>
+        <thbody>
+            <c:forEach var="purse" items="${purses}">
                 <tr>
                     <td>${purse.id}</td>
-                    <td>${purse.owner.id}</td>
+                    <td>${purse.ownerDTO.id}</td>
                     <td>${purse.name}</td>
-                    <td>${purse.currency.name}</td>
+                    <td>${purse.currencyDTO.name}</td>
                     <td>${purse.amount}</td>
                     <td>
                         <p>
@@ -36,8 +36,8 @@
                         </p>
                     </td>
                 </tr>
-            </thbody>
-        </c:forEach>
+            </c:forEach>
+        </thbody>
     </table>
 </div>
 </body>

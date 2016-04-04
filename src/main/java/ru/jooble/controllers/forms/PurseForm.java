@@ -1,7 +1,7 @@
 package ru.jooble.controllers.forms;
 
 
-import ru.jooble.domain.Purse;
+import ru.jooble.DTO.PurseDTO;
 
 
 public class PurseForm {
@@ -15,12 +15,12 @@ public class PurseForm {
 
     }
 
-    public PurseForm(Purse purse) {
-        this.id = Long.toString(purse.getId());
-        this.name = purse.getName();
-        this.amount = purse.getAmount().toString();
-        this.currencyId = Long.toString(purse.getCurrency().getId());
-        this.ownerId = Long.toString(purse.getOwner().getId());
+    public PurseForm(PurseDTO purseDTO) {
+        this.id = purseDTO.getId();
+        this.name = purseDTO.getName();
+        this.amount = purseDTO.getAmount();
+        this.currencyId = purseDTO.getCurrencyDTO().getId();
+        this.ownerId = purseDTO.getOwnerDTO().getId();
     }
 
     public String getId() {

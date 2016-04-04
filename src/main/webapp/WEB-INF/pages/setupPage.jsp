@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css"/>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
@@ -11,3 +12,8 @@
 
 
 <script type="text/javascript" src="<c:url value="/resources/js/windowButtonDelete.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
+
+
+<%--TODO Jstl сообщения подключил, как засунуть в метод
+<fmt:message key="message.confirm.deleteCurrency" bundle="${lang}"/>--%>

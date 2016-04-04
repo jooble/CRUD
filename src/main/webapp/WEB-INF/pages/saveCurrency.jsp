@@ -14,7 +14,6 @@
     <form:form method="post" action="/save/currency" commandName="currencyForm">
         <form:input class="form-control" id="id" path="id" value="${currencyForm.id}" type="hidden"/>
         <label>Name</label><br/>
-
         <div class="form-group">
             <form:input class="form-control" id="shortName" path="shortName" placeholder="Name"
                         value="${currencyForm.shortName}"/>

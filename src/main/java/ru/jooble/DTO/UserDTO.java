@@ -1,20 +1,23 @@
-package ru.jooble.controllers.forms;
+package ru.jooble.DTO;
 
+import ru.jooble.domain.User;
 
-import ru.jooble.DTO.UserDTO;
+import java.util.List;
 
-public class UserForm {
+public class UserDTO {
     private String id;
     private String firstName;
     private String lastName;
+    private List<PurseDTO> purseDTOs;
 
-    public UserForm() {
+    public UserDTO() {
+
     }
 
-    public UserForm(UserDTO userDTO) {
-        this.id = userDTO.getId();
-        this.firstName = userDTO.getFirstName();
-        this.lastName = userDTO.getLastName();
+    public UserDTO(User user) {
+        this.id = Long.toString(user.getId());
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
     }
 
     public String getId() {
@@ -41,11 +44,11 @@ public class UserForm {
         this.lastName = lastName;
     }
 
-    @Override
-    public String toString() {
-        return "UserForm{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
+    public List<PurseDTO> getPurseDTOs() {
+        return purseDTOs;
+    }
+
+    public void setPurseDTOs(List<PurseDTO> purseDTOs) {
+        this.purseDTOs = purseDTOs;
     }
 }
