@@ -25,5 +25,4 @@
             </c:forEach>
         </thbody>
     </table>
-    ${criteria}
 </div>

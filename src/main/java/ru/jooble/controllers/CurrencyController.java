@@ -13,11 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ru.jooble.DTO.CurrencyDTO;
 import ru.jooble.controllers.forms.CurrencyForm;
 import ru.jooble.controllers.validator.CurrencyFromValidator;
-import ru.jooble.domain.Currency;
 import ru.jooble.service.CurrencyService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Controller
@@ -88,9 +84,7 @@ public class CurrencyController {
 
     @RequestMapping(value = "/all/currency/search/{criteria}", method = RequestMethod.GET)
     public String searchCurrency(@PathVariable(value = "criteria") String criteria, ModelMap model) {
-        List<Currency> currencies = new ArrayList<>();
         model.addAttribute("currencies", currencyService.getByCriteria(criteria));
-        model.addAttribute("criteria", criteria);
         return "tableAllCurrency";
     }
 }
