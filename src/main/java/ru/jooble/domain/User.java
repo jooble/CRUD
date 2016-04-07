@@ -48,14 +48,4 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", purses=" + purses +
-                '}';
-    }
 }

@@ -42,7 +42,6 @@ public class ConverterDTOToDomain {
         return exchange;
     }
 
-
     public User convertUserDTOToTheUser(UserDTO userDTO) {
         return getUser(userDTO);
     }
@@ -100,5 +99,4 @@ public class ConverterDTOToDomain {
         purse.setOwner(getUser(purseDTO.getOwnerDTO()));
         purse.setAmount(new BigDecimal(purseDTO.getAmount()));
     }
-
 }

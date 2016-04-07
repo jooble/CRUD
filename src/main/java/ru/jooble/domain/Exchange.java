@@ -52,5 +52,4 @@ public class Exchange {
     public void setExchangeRate(double exchangeRate) {
         this.exchangeRate = exchangeRate;
     }
-
 }

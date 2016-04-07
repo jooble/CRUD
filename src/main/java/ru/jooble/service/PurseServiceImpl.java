@@ -21,17 +21,16 @@ public class PurseServiceImpl implements PurseService {
     @Autowired
     private ConverterDTOToDomain converterDTOToDomain;
 
-
     @Override
     @Transactional(readOnly = true)
     public PurseDTO getById(long id) {
-        return new PurseDTO(purseDAO.getById(id));
+        return new PurseDTO(purseDAO.findOne(id));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<PurseDTO> getAll() {
-        List<Purse> purses = purseDAO.getAll();
+        List<Purse> purses = purseDAO.findAll();
         List<PurseDTO> purseDTOs = new ArrayList<>();
         for (Purse purse : purses) {
             purseDTOs.add(new PurseDTO(purse));
@@ -42,18 +41,19 @@ public class PurseServiceImpl implements PurseService {
     @Override
     @Transactional
     public void insert(PurseDTO purseDTO) {
-        purseDAO.insert(converterDTOToDomain.convertPurseDTOToThePurse(purseDTO));
+        purseDAO.saveAndFlush(converterDTOToDomain.convertPurseDTOToThePurse(purseDTO));
     }
 
     @Override
     @Transactional
     public void update(PurseDTO purseDTO) {
-        purseDAO.update(converterDTOToDomain.convertPurseDTOToThePurse(purseDTO));
+        purseDAO.saveAndFlush(converterDTOToDomain.convertPurseDTOToThePurse(purseDTO));
     }
 
     @Override
     @Transactional
     public void deleteById(long id) {
-        purseDAO.deleteById(id);
+        Purse purse = purseDAO.findOne(id);
+        purseDAO.delete(purse);
     }
 }

@@ -36,7 +36,8 @@
                         <td>
                             <p>
                                 <a onclick="deleteCurrency(${currency.id}, '<fmt:message
-                                        key="message.confirm.deleteCurrency" bundle="${lang}"/>')"
+                                        key="message.confirm.deleteCurrency" bundle="${lang}"/>', '<fmt:message
+                                        key="message.confirm.deleteError" bundle="${lang}"/>')"
                                    class="btn btn-danger btn-xs"
                                    role="button">delete</a>
                                 <a class="btn btn-default btn-xs" href="/save/currency/${currency.id}"

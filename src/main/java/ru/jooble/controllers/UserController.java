@@ -77,7 +77,6 @@ public class UserController {
         return userDTO;
     }
 
-
     @RequestMapping(value = "/delete/user/{id}", method = RequestMethod.GET)
     public RedirectView deleteUser(@PathVariable(value = "id") Long id) {
         userService.deleteById(id);

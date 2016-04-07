@@ -21,6 +21,7 @@ public class CurrencyController {
     private static final String ALL_CURRENCY = "allCurrency";
     private static final String SAVE_CURRENCY = "saveCurrency";
     private static final String ERROR_PAGE = "errorPage";
+
     @Autowired
     private CurrencyService currencyService;
     @Autowired

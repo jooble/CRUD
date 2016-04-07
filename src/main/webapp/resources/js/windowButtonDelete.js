@@ -1,5 +1,5 @@
-function deleteCurrency(currencyId, message) {
-    if (confirm(message)) {
+function deleteCurrency(currencyId, messageDelete, messageError) {
+    if (confirm(messageDelete)) {
         $.ajax({
             type: "POST",
             url: "/delete/currency/" + currencyId,
@@ -7,7 +7,7 @@ function deleteCurrency(currencyId, message) {
                 $("#trCurrencyId" + currencyId).remove();
             },
             error: function () {
-                alert("Can`t delete currency");
+                alert(messageError);
             }
         });
     }

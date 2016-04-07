@@ -5,6 +5,7 @@ import ru.jooble.DTO.UserDTO;
 import java.util.List;
 
 public interface UserService {
+
     UserDTO getById(long id);
 
     void insert(UserDTO userDTO);

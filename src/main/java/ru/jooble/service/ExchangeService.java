@@ -16,5 +16,4 @@ public interface ExchangeService {
     void update(ExchangeDTO exchangeDTO);
 
     void deleteById(long id);
-
 }

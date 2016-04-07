@@ -28,6 +28,7 @@ public class PurseController {
     private static final String ERROR_PAGE = "errorPage";
     private static final String SAVE_PURSE = "savePurse";
     private static final String PAGE_USER_SAVE_PURSE = "addPurseToUser";
+
     @Autowired
     private CurrencyService currencyService;
     @Autowired
@@ -41,7 +42,6 @@ public class PurseController {
     private void initBinder(WebDataBinder binder) {
         binder.setValidator(purseFromValidator);
     }
-
 
     @RequestMapping(method = RequestMethod.GET)
     public String showPageAllPurses(ModelMap model) {

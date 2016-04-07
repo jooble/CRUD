@@ -17,5 +17,4 @@ public interface CurrencyService {
     void deleteById(long id);
 
     List<CurrencyDTO> getByCriteria(String criteria);
-
 }

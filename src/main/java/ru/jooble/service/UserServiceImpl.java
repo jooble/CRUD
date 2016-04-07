@@ -21,17 +21,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ConverterDTOToDomain converterDTOToDomain;
 
-
     @Override
     @Transactional(readOnly = true)
     public UserDTO getById(long id) {
-        return new UserDTO(userDAO.getById(id));
+        return new UserDTO(userDAO.findOne(id));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<UserDTO> getAll() {
-        List<User> users = userDAO.getAll();
+        List<User> users = userDAO.findAll();
         List<UserDTO> userDTOs = new ArrayList<>();
         for (User user : users) {
             userDTOs.add(new UserDTO(user));
@@ -42,21 +41,21 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void insert(UserDTO userDTO) {
-        userDAO.insert(converterDTOToDomain.convertUserDTOToTheUser(userDTO));
+        userDAO.saveAndFlush(converterDTOToDomain.convertUserDTOToTheUser(userDTO));
     }
 
     @Override
     @Transactional
     public void update(UserDTO userDTO) {
-        userDAO.update(converterDTOToDomain.convertUserDTOToTheUser(userDTO));
+        userDAO.saveAndFlush(converterDTOToDomain.convertUserDTOToTheUser(userDTO));
     }
 
     @Override
     @Transactional
     public void deleteById(long id) {
-        userDAO.deleteById(id);
+        User user = userDAO.findOne(id);
+        userDAO.delete(user);
     }
-
 }
 
 

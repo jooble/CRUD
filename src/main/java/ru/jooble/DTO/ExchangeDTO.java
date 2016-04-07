@@ -8,7 +8,6 @@ public class ExchangeDTO {
     private CurrencyDTO targetCurrency;
     private String exchangeRate;
 
-
     public ExchangeDTO() {
     }
 
@@ -18,7 +17,6 @@ public class ExchangeDTO {
         this.targetCurrency = new CurrencyDTO(exchange.getTargetCurrency());
         this.exchangeRate = Double.toString(exchange.getExchangeRate());
     }
-
 
     public String getId() {
         return id;

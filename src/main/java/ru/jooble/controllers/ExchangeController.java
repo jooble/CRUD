@@ -26,17 +26,16 @@ public class ExchangeController {
     private static final String SAVE_EXCHANGE = "saveExchange";
 
     @Autowired
-    ExchangeService exchangeService;
+    private ExchangeService exchangeService;
     @Autowired
-    CurrencyService currencyService;
+    private CurrencyService currencyService;
     @Autowired
-    ExchangeFromValidator exchangeFromValidator;
+    private ExchangeFromValidator exchangeFromValidator;
 
     @InitBinder
     private void initBinder(WebDataBinder binder) {
         binder.setValidator(exchangeFromValidator);
     }
-
 
     @RequestMapping(value = "/all/exchange", method = RequestMethod.GET)
     public String showAllUsers(ModelMap model) {

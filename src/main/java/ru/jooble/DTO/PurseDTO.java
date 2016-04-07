@@ -60,5 +60,4 @@ public class PurseDTO {
     public void setAmount(String amount) {
         this.amount = amount;
     }
-
 }

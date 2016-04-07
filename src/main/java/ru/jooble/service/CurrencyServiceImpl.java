@@ -23,14 +23,13 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     @Transactional(readOnly = true)
     public CurrencyDTO getById(long id) {
-        return new CurrencyDTO(currencyDAO.getById(id));
+        return new CurrencyDTO(currencyDAO.findOne(id));
     }
-
 
     @Override
     @Transactional(readOnly = true)
     public List<CurrencyDTO> getAll() {
-        List<Currency> currencies = currencyDAO.getAll();
+        List<Currency> currencies = currencyDAO.findAll();
         List<CurrencyDTO> currencyDTOs = new ArrayList<>();
         for (Currency currency : currencies) {
             currencyDTOs.add(new CurrencyDTO(currency));
@@ -41,20 +40,21 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     @Transactional
     public void insert(CurrencyDTO currencyDTO) {
-        currencyDAO.insert(converterDTOToDomain.convertCurrencyDTOToTheCurrency(currencyDTO));
+        currencyDAO.saveAndFlush(converterDTOToDomain.convertCurrencyDTOToTheCurrency(currencyDTO));
     }
 
     @Override
     @Transactional
     public void update(CurrencyDTO currencyDTO) {
-        currencyDAO.update(converterDTOToDomain.convertCurrencyDTOToTheCurrency(currencyDTO));
+        currencyDAO.saveAndFlush(converterDTOToDomain.convertCurrencyDTOToTheCurrency(currencyDTO));
     }
 
     @Override
     @Transactional
     public void deleteById(long id) {
         try {
-            currencyDAO.deleteById(id);
+            Currency currency = currencyDAO.findOne(id);
+            currencyDAO.delete(currency);
         } catch (CanNotDeleteCurrencyException e) {
             throw new CanNotDeleteCurrencyException(String.format("Can`t delete currency. Id - (%)", id), e);
         }
@@ -63,7 +63,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     @Transactional(readOnly = true)
     public List<CurrencyDTO> getByCriteria(String criteria) {
-        List<Currency> currencies = currencyDAO.getByCriteria(criteria);
+        List<Currency> currencies = currencyDAO.findByNameIgnoreCaseLike("%" + criteria + "%");
         List<CurrencyDTO> currencyDTOs = new ArrayList<>();
         for (Currency currency : currencies) {
             currencyDTOs.add(new CurrencyDTO(currency));

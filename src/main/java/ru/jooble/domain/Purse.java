@@ -63,5 +63,4 @@ public class Purse {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-
 }

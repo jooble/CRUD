@@ -24,13 +24,13 @@ public class ExchangeServiceImpl implements ExchangeService {
     @Override
     @Transactional(readOnly = true)
     public ExchangeDTO getById(long id) {
-        return new ExchangeDTO(exchangeDAO.getById(id));
+        return new ExchangeDTO(exchangeDAO.findOne(id));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<ExchangeDTO> getAll() {
-        List<Exchange> exchanges = exchangeDAO.getAll();
+        List<Exchange> exchanges = exchangeDAO.findAll();
         List<ExchangeDTO> exchangeDTOs = new ArrayList<>();
         for (Exchange exchange : exchanges) {
             exchangeDTOs.add(new ExchangeDTO(exchange));
@@ -41,20 +41,19 @@ public class ExchangeServiceImpl implements ExchangeService {
     @Override
     @Transactional
     public void insert(ExchangeDTO exchangeDTO) {
-        exchangeDAO.insert(converterDTOToDomain.convertExchangeDTOToTheExchange(exchangeDTO));
+        exchangeDAO.saveAndFlush(converterDTOToDomain.convertExchangeDTOToTheExchange(exchangeDTO));
     }
 
     @Override
     @Transactional
     public void update(ExchangeDTO exchangeDTO) {
-        exchangeDAO.update(converterDTOToDomain.convertExchangeDTOToTheExchange(exchangeDTO));
+        exchangeDAO.saveAndFlush(converterDTOToDomain.convertExchangeDTOToTheExchange(exchangeDTO));
     }
 
     @Override
     @Transactional
     public void deleteById(long id) {
-        exchangeDAO.deleteById(id);
+        Exchange exchange = exchangeDAO.findOne(id);
+        exchangeDAO.delete(exchange);
     }
-
-
 }
